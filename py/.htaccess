@@ -1,0 +1,7 @@
+RewriteOptions inherit
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^botpi\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.botpi\.com$
+RewriteRule ^([a-zA-Z0-9_-]+)$ http\:\/\/botpi\.com\/catalogo\.html\?n\=$1" [R=301,L]
+RewriteRule ^([a-zA-Z0-9_-]+)/$ "http\:\/\/botpi\.com\/catalogo\.html\?n\=$1" [R=301,L]
