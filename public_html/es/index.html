@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>El inventario de su tienda</title>
+	<meta name="description" content="Su inventario de una manera facil y rapida desde cualquier parte del mundo. Solo necesita una conexion a internet y uno de nuestros lectores" />
+	<meta name="author" content="Botpi" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="../css/myFinan.css">
+	<link rel="shortcut icon" href="../favicon.ico" />
+	<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+		
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/jindex.js"></script>
+	<script type="text/javascript" src="../js/japiinv.js"></script>
+	<script type="text/javascript" src="../js/jcomun.js"></script>
+	<script type="text/javascript" src="../js/jgoogle.js"></script>
+    <!-- <script type="text/javascript" src="../js/live.js"></script> -->
+		
+	<script>
+		$( document ).ready(function() {
+			pagina = "invindex";
+			titulo = "El inventario de su tienda";
+			ayuda = "http://gtienda.com/wiki/mediawiki-1.23.5/index.php?title=GTienda:Acerca_de";
+			leeServidor();
+            inicioIndex();
+		});
+	</script>
+</head>
+<body align="center">
+<div class="section v2">
+<div class="container fila">
+    <div class="col">
+    <div class="brand">
+        <img alt="Inventario" src="images/marca-v2.jpg" />
+    </div>
+    </div>
+    <div class="col">
+    <div class="login">
+        <input class="col min-split no-cell" id="emaillogin" placeholder="Email">
+        <input class="col min-split no-cell" id="passwdlogin" placeholder="Contraseña" type="password" onkeydown="if (event.keyCode == 13) login();"/>
+        <div id="btnlogin" class="col min-split btn-div no-cell" onclick="login();">Iniciar sesion</div>
+        <div id="btnshow" class="col min-split btn-div yes-cell" onclick="showLogin(1);">Iniciar sesion</div>
+    </div>
+    </div>
+</div>
+</div>
+<hr class="hr-header">
+<div class="section v2">
+<div class="container fila">
+    <div class="col col-padding idx-left">
+        <div class="txt-main no-cell">
+            Su inventario de una manera facil y rapida desde cualquier<br />
+            parte del mundo. Solo necesita una conexion a internet<br />
+            y uno de nuestros lectores
+        </div>
+        <img alt="Acción Positiva de myFinan" src="images/grafico-v3.jpg" />
+    </div>
+    <div class="col col-padding">
+        <div>
+        <table class="singup-pad">
+            <tr>
+                <td class="td-singup big">
+                    Registrarse
+                </td>
+            </tr>
+            <tr>
+                <td class="td-singup">
+                    Es muy fácil
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><input id="nombre" placeholder="Nombre(s)" style="width:218px"></td>
+            </tr>
+            <tr>
+                <td><input id="email" placeholder="Email" style="width:218px"></td>
+            </tr>
+            <tr>
+                <td><input id="clave" placeholder="Contraseña" style="width:218px" type="password" onkeydown="if (event.keyCode == 13) registrar();"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="btn-div" id="registrarButton" onclick="registrar()">Regístrame</div>
+                </td>
+            </tr>
+            <tr class="no-cell">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <label id="yaExisteLabel" style="display: none; color: red">El Usuario Ya Existe</label>
+                </td>
+            </tr>
+        </table>
+        <div class="txt-main yes-cell singup-pad">
+            MyFinan te ayuda a conocer y reducir tus gastos<br />
+            para que puedas vivir bien sin exceder tus ingresos<br />
+            y ahorrar poco a poco para ese sueño...
+        </div>
+        <div class="yes-cell">&nbsp;</div>
+<!--         <div class="a-info">
+        <a id="ayudaLinkButton" href="ayudaconcepto.html">¿Quieres saber más de MyFinan?</a>
+        </div>
+        <div class="a-info">
+        <a id="ayudaMovLinkButton" href="ayudamov.html" onclick="ayudaMov()">¿Cómo funciona MyFinan?</a>
+        </div> -->
+        <div class="a-info">
+        <a id="contactoLinkButton" href="contacto.html" onclick="contacto()">Contáctenos</a>
+        </div>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="yes-cell">&nbsp;</div>
+    <div class="footer">
+        Inventario<span title="HPHP"> </span>
+        <span id="rtime" title="118">©</span>
+        <span title="10.136.233.124">2019 - 2019</span>
+    </div>
+    <div class="yes-cell">&nbsp;</div>
+</footer>
+</body>
+</html>
