@@ -3,7 +3,7 @@ function leeServidor()
 {
  	ayuda = "http://wiki.myfinan.com";
  	if (typeof servidor == 'undefined' || servidor=="" || servidor==null)
-		servidor = "142.93.52.198:8085";
+		servidor = "142.93.52.198:8086";
 }
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

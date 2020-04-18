@@ -2,7 +2,7 @@
  * @author botpi
  */
 
-function inicioMov()
+function inicioLee()
 {
 	// encabezado = getCookie("encabezado");
 	encabezado = localStorage.getItem("encabezado");
@@ -10,44 +10,47 @@ function inicioMov()
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
-	poneDatePicker("#fecha", "", new Date());
-	$("#periodo").val("d");		
 	refrescar();
 }
 
 function refrescar()
 {
-	cambios = [];
-	$("#valor").val("");
-	$("#concepto").val("");
-	$("#valor2").val("");
-	$("#concepto2").val("");	
-	$("#concepto").focus();
-	MovimientosI(new Date($("#fecha").val()), $("#periodo").val(), dibujaProductos);
+	$("#texto").val("");
+	$("#pregunta").val("");
+	$("#opciones").val("");
+	$("#respuesta").val("");	
+	$("#pregunta").focus();
+	LeeTextoA(1, dibujaTexto);
 }
 
-function dibujaProductos(datos)
+function dibujaTexto(datos)
 {
 	if (!datos) {
 		document.cookie = "pagpend=" + document.URL;			
 		window.location.assign("index.html");		
 	}
 	gdatos = datos;
-	$('#usuario').html("Bienvenido " + gdatos.usuario.nombre);
+	$('#usuario').html("Bienvenido(a) " + gdatos.usuario.nombre);
 	var userLang = navigator.language || navigator.userLanguage; 
-	// if (userLang.indexOf("es") >= 0) {
-	// 	$('#usuario').html("Bienvenido " + gdatos.usuario.nombre);
-	// }
-	// else {
-	// 	$('#usuario').html("Welcome " + gdatos.usuario.nombre);
-	// }
 
-	if (typeof gIDproducto=='undefined' || gIDproducto==null || gIDproducto==0)
-		gIDproducto=gdatos.datos[0].ID;
+	idpregunta = 0
+	texto = gdatos.textos[0]
+	pregunta = gdatos.preguntas[0]
+	$("#texto").val(texto.texto);
+	$("#pregunta").val(pregunta.texto);
+	$("#opciones").html(armaOpciones(pregunta.posibles));
+	$("#respuesta").val(pregunta.respuesta.texto);	
+	$("#pregunta").focus();
 
-	dibujaCuadroMovimientos();
-	LeeDetalle(gIDproducto);
+}
 
+function armaOpciones(lista)
+{
+	var cad = "";
+	$.each(lista, function(i,item) {
+		cad = cad + '<input type="radio" name="opciones" value="' + i + '">' + item.texto + '<br>';
+	});
+	return cad;
 }
 
 function dibujaCuadroMovimientos()

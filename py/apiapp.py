@@ -5,12 +5,12 @@ Created on 02/01/2015
 @author: Botpi
 '''
 from apiDB import DB
-from subinv import *
+from subapp import *
 from comun import *
 
-def LoginI(email, clave):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+def Login(email, clave):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         bd.cierra()
         return usuario
@@ -18,9 +18,33 @@ def LoginI(email, clave):
     bd.cierra()
     return None
 
+def LeeTextoA(email, clave, IDtexto):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        response = {}
+        response['usuario'] = usuario
+        response["textos"] = bd.Ejecuta("select * from textos where id=%s" % (IDtexto))
+        response["preguntas"] = bd.Ejecuta("select * from preguntas where idtexto=%s" % (IDtexto))
+        for pregunta in response['preguntas']:
+            pregunta['posibles'] = bd.Ejecuta("select * from posibles where idpregunta=%s" % pregunta['id'])
+            rows = bd.Ejecuta("""
+                SELECT posibles.* FROM respuestas 
+                    INNER JOIN posibles ON posibles.idpregunta=respuestas.idpregunta
+                WHERE respuestas.idpregunta=%s 
+                    AND posibles.id=respuestas.idposibles
+                """ % pregunta['id'])
+            if rows:
+                pregunta['respuesta'] = rows[0]
+        bd.cierra()
+        return response
+    bd.cierra()
+    return None
+
+
 def PoneModoI(email, clave, IDlector, modo):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         bd.Ejecuta("update lectores set modo='%s' where ID=%s" % (modo, IDlector))
         bd.Ejecuta("delete from lecturasp where IDlector=%s" % IDlector)
@@ -29,8 +53,8 @@ def PoneModoI(email, clave, IDlector, modo):
     return None
 
 def TomaLecturaI(email, clave, IDlector, cb, fecha):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         if lector['modo'] in 'ce':
@@ -51,8 +75,8 @@ def TomaLecturaI(email, clave, IDlector, cb, fecha):
     return None
 
 def BuscaLecturaI(email, clave, IDlector):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         response = {}
         rows = bd.Ejecuta("select * from lecturasp where IDlector=%s" % IDlector)
@@ -92,8 +116,8 @@ def BuscaLecturaI(email, clave, IDlector):
     return None
 
 def LeeProductoI(email, clave, IDlector, IDproducto):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         rows = bd.Ejecuta("select * from productos where ID=%s" % IDproducto)
@@ -114,8 +138,8 @@ def LeeProductoI(email, clave, IDlector, IDproducto):
         return None
 
 def AgregaLecturaI(email, clave, IDlector, concepto, cb, cantidad, precioc, preciov, fecha):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         producto = bd.Ejecuta("select * from productos where IDcliente=%s and cb='%s'" % 
@@ -136,8 +160,8 @@ def AgregaLecturaI(email, clave, IDlector, concepto, cb, cantidad, precioc, prec
     return None
 
 def AgregaProductoI(email, clave, IDlector, cb, nombre, precioc, preciov, cantidad):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         rows = bd.Ejecuta("select * from productos where IDcliente=%s and cb='%s'" % (lector['IDcliente'], cb))
@@ -156,8 +180,8 @@ def AgregaProductoI(email, clave, IDlector, cb, nombre, precioc, preciov, cantid
     return None
 
 def ModificaProductoI(email, clave, IDlector, cb, nombre, precioc, preciov):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         rows = bd.Ejecuta("select * from productos where IDcliente=%s and cb='%s'" % (lector['IDcliente'], cb))
@@ -170,8 +194,8 @@ def ModificaProductoI(email, clave, IDlector, cb, nombre, precioc, preciov):
     return None
 
 def EliminaMovimientoI(email, clave, IDmovimiento):
-    bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
     print("llega", IDmovimiento)
     if usuario:
         bd.Ejecuta("delete from movimientos where ID=%s" % IDmovimiento)
@@ -182,7 +206,7 @@ def EliminaMovimientoI(email, clave, IDmovimiento):
 
 def MovimientosI(email, clave, IDlector, fecha, periodo):
 	bd = DB(nombrebd="inv")
-	usuario = logini(email, clave, bd)
+	usuario = login(email, clave, bd)
 	if usuario:
 		if periodo=='m':
 			desde, hasta = month(fecha)
@@ -204,7 +228,7 @@ def MovimientosI(email, clave, IDlector, fecha, periodo):
 
 def MovimientosDetalleI(email, clave, IDlector, fecha, periodo, IDproducto):
     bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    usuario = login(email, clave, bd)
     if usuario:
         if periodo=='m':
             desde, hasta = month(fecha)
@@ -223,7 +247,7 @@ def MovimientosDetalleI(email, clave, IDlector, fecha, periodo, IDproducto):
 
 def ReadLikesI(email, clave, IDlector, values):
     bd = DB(nombrebd="inv")
-    usuario = logini(email, clave, bd)
+    usuario = login(email, clave, bd)
     if usuario:
         lector = bd.Ejecuta("select * from lectores where ID=%s" % IDlector)[0]
         v = values.strip()

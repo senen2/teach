@@ -6,7 +6,7 @@ function login()
 {
 	if (IsEmail($("#emaillogin").val()) & $("#passwdlogin").val()!="") {
 		encabezado = "'" + $("#emaillogin").val() + "','" + $("#passwdlogin").val() + "'";
-		LoginI(verUsuario);
+		Login(verUsuario);
 	}
 }
 
@@ -16,10 +16,16 @@ function verUsuario(datos)
 		// document.cookie = "encabezado=" + encabezado;
 		localStorage.setItem("encabezado", encabezado);
 		localStorage.setItem("email", $("#emaillogin").val());
-		window.location.assign("mov.html");
+		window.location.assign("lee.html");
 	}
 	else
 		alert("nombre de usuario o clave incorrectos");
+}
+
+function inicioIndex() {
+	if (localStorage.getItem("encabezado")) {
+		window.location.assign("lee.html");
+	}
 }
 
 function registrar()
@@ -42,9 +48,4 @@ function verCreacion(datos)
 		LoginF(verUsuario);
 	else	
 		alert("ya existe una cuenta con este email");
-}
-function inicioIndex() {
-	if (localStorage.getItem("encabezado")) {
-		window.location.assign("mov.html");
-	}
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Centro de Aprendizaje</title>
+	<meta name="description" content="Su inventario de una manera facil y rapida desde cualquier parte del mundo. Solo necesita una conexion a internet y uno de nuestros lectores" />
+	<meta name="author" content="Botpi" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="../css/myFinan.css">
+	<link rel="shortcut icon" href="../favicon.ico" />
+	<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+		
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/jlee.js"></script>
+	<script type="text/javascript" src="../js/japiapp.js"></script>
+	<script type="text/javascript" src="../js/jcomun.js"></script>
+	<script type="text/javascript" src="../js/jgoogle.js"></script>
+    <!-- <script type="text/javascript" src="../js/live.js"></script> -->
+	<style type="text/css">
+         .Row {
+            display: table;
+            table-layout: fixed; /*Optional*/
+        }
+        .Column {
+            display: table-cell;
+            background-color: lightblue; /*Optional*/
+        }
+        #texto {
+            width: 100%; 
+            height: 400px; 
+            font-family: arial;
+        }
+    </style>
+	<script>
+		$( document ).ready(function() {
+			pagina = "aprindex";
+			titulo = "Centro de Aprendizaje";
+			ayuda = "http://gtienda.com/wiki/mediawiki-1.23.5/index.php?title=GTienda:Acerca_de";
+			leeServidor();
+            inicioLee();
+		});
+	</script>
+</head>
+<body align="center">
+
+<div id="mask" class="DN" onclick="cancelar();"> </div>
+<div id="mask2" class="DN mask" onclick="menuPop(0);"> </div>
+<div class="section">
+    <div class="container">
+        <div class="fila">
+            <div class="col2 menu-img">
+                <span onclick="menuPop(1);"></span>
+            </div>
+            <div class="col2">&nbsp;&nbsp;&nbsp;</div>
+            <div class="col2 welcome">
+                <label id="usuario">Bienvenido(a)</label>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div style="margin-left: 20px">
+    <div class="row"  style="height: 400px">
+        <div class="Column">
+            <h3 id="titulo">Texto</h3>
+            <textarea id="texto"></textarea>
+        </div>
+        <div class="Column" style="width: 15%;">
+            <h3>Pregunta</h3>
+            <textarea id="pregunta" style="width: 100%; height: 400px;"></textarea>
+        </div>
+        <div class="Column" style="width: 15%; height: 400px;">
+            <h3>Posibles</h3>
+            <form id="opciones" style="width: 100%; height: 406px; background-color: white"></form>
+        </div>
+        <div class="Column" style="width: 15%;">
+            <h3>Respuesta</h3>
+            <textarea id="respuesta" style="width: 100%; height: 400px;"></textarea>
+        </div>
+    </div>
+</div>
+
+<div id="menu" class="config-menu">
+    <h2>Menu</h2>
+    <a class="btn-a v2" href="entradas.html"><div><span>Compras Lector</span></div></a>
+    <a class="btn-a v2" href="entradast.html"><div><span>Compras Teclado</span></div></a>
+    <a class="btn-a v2" href="creaprod.html"><div><span>Creación y Modificacion</span></div></a>
+    <a class="btn-a v2" href="#" onclick="logout();"><div><span>Salir</span></div></a>
+</div>
+
+</body>
+</html>

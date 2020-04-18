@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style type="text/css">
+	@keyframes up {
+		from {
+			opacity: 0;
+			transform: translateY(100px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0px);
+		}
+	}
+	*{
+		animation-name: up;
+		animation-duration: 0s;
+	}
+	.logo {
+		margin-top: 45%;
+	}
+</style>
+<head>
+	<title>Screen</title>
+</head>
+<body>
+<div align="center" class="logo">
+	<!-- <img src="images/marca-v2.jpg" alt="Inventario" style="width: 90%;"> -->
+</div>
+</body>
+<script type="text/javascript">
+	window.onload = function() {
+		window.setTimeout(function() {
+			window.location = "es/index.html";
+		}, 10)
+	}
+</script>
+</html>

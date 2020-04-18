@@ -2,38 +2,12 @@
  * @author botpi
  */
 
-function LeeProductoI(IDproducto, funcion)
-{
-	$.ajax({
-		url: "http://" + servidor + "/function/LeeProductoI(" + encabezado + "," + IDlector + "," + IDproducto + ")?pagina=" + pagina,
-		jsonp: "callback",
-		dataType: "jsonp",
-		success: function( response ) {
-			funcion(response);
-		}
-	});	
-}
-
-function ReadLikesI(ventrada, funcion)
-{
-	//ventrada = $('tagsx').val();
-	var xx = "http://" + servidor + "/function/ReadLikesI(" + encabezado + "," + IDlector + ",'" + ventrada + "'" + ")?pagina=" + pagina;
-	$.ajax({
-		url: "http://" + servidor + "/function/ReadLikesI(" + encabezado + "," + IDlector + ",'" + ventrada + "'" + ")?pagina=" + pagina,
-		jsonp: "callback",
-		dataType: "jsonp",
-		success: function( response ) {
-			funcion(response);
-		}
-	});	
-}
-
 /*-------------------- index
 */    
-function LoginI(funcion)
+function Login(funcion)
 {
 	$.ajax({
-		url: "http://" + servidor + "/function/LoginI(" + encabezado + ")?pagina=" + pagina,
+		url: "http://" + servidor + "/function/Login(" + encabezado + ")?pagina=" + pagina,
 		jsonp: "callback",
 		dataType: "jsonp",
 		success: function( response ) {
@@ -44,11 +18,10 @@ function LoginI(funcion)
 
 function nada() {}
 
-function PoneModoI(modo, funcion)
+function LeeTextoA(idtexto, funcion)
 {
-	temp = "http://" + servidor + "/function/PoneModoI(" + encabezado + "," + IDlector + ",'" + modo + "')?pagina=" + pagina;
 	$.ajax({
-		url: "http://" + servidor + "/function/PoneModoI(" + encabezado + "," + IDlector + ",'" + modo + "')?pagina=" + pagina,
+		url: "http://" + servidor + "/function/LeeTextoA(" + encabezado + "," + idtexto + ")?pagina=" + pagina,
 		jsonp: "callback",
 		dataType: "jsonp",
 		success: function( response ) {

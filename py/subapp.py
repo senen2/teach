@@ -7,7 +7,7 @@ Created on 02/01/2015
 # import json
 # import datetime, decimal
 
-def logini(email, clave, bd):
+def login(email, clave, bd):
     rows = bd.Ejecuta("select * from usuarios where email='%s' and clave='%s'" % (email, clave))
     if rows:
         return rows[0]
