@@ -6,7 +6,7 @@ function inicioLee()
 {
 	// encabezado = getCookie("encabezado");
 	encabezado = localStorage.getItem("encabezado");
-	IDlector = 1;
+	idtexto = 1;
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
@@ -20,7 +20,7 @@ function refrescar()
 	$("#opciones").val("");
 	$("#respuesta").val("");	
 	$("#pregunta").focus();
-	LeeTextoA(1, dibujaTexto);
+	LeeTextoA(idtexto, dibujaTexto);
 }
 
 function dibujaTexto(datos)
@@ -29,44 +29,61 @@ function dibujaTexto(datos)
 		document.cookie = "pagpend=" + document.URL;			
 		window.location.assign("index.html");		
 	}
-	gdatos = datos;
-	$('#usuario').html("Bienvenido(a) " + gdatos.usuario.nombre);
+	gtexto = datos;
+	$('#usuario').html("Bienvenido(a) " + gtexto.usuario.nombre);
 	var userLang = navigator.language || navigator.userLanguage; 
 
-	idpregunta = 0
-	texto = gdatos.textos[0]
-	pregunta = gdatos.preguntas[0]
-	gdatos.opcion = 0;
-	$("#texto").val(texto.texto);
-	armaPreguntas(gdatos.preguntas, 0, "#preguntas")
-	//$("#preguntas").val(pregunta.texto);
-	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
-	$("#pregunta").focus();
+	$("#texto").val(gtexto.textos[0].texto);
+	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
+	selPregunta(gtexto.preguntas[0].id)
+	//$("#pregunta").focus();
 
 }
 
 function armaPreguntas(preguntas, idsel, tag)
 {
-	var cad = "";
+	var cad = "", pregunta;
 	$.each(preguntas, function(i,item) {
-		cad = cad + '<textarea id="pregunta-' + i + 
-				'"class="pregunta" style="overflow-y:auto;"' +
-				((item.id==idsel) ? ' checked ' : '') + '>' +
+		cad = cad + '<textarea id="pregunta-' + item.id + 
+				'"class="pregunta"' +
+				//((item.id==idsel) ? ' background-color: lightblue;' : '') + 
+				' onmouseover="selPregunta(' + item.id + ');"' + 
+				' onmouseout="deselPregunta(' + item.id + ');"' + 
+				'>' +
 		 		item.texto + '</textarea>';
+		 if (item.id==idsel)
+		 	pregunta = item;
 	});
 	$(tag).html(cad);
-	//armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
+	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
 }
 
 function armaOpciones(lista, idsel, tag)
 {
 	var cad = "";
 	$.each(lista, function(i,item) {
-		cad = cad + '<input type="radio" name="opciones" value="' + i + '"' +
+		cad = cad + '<input type="radio" name="opciones" value="' + item.id + '"' +
 				((item.id==idsel) ? ' checked ' : '') + '>' +
 		 		item.texto + '<br>';
 	});
 	$(tag).html(cad);
+}
+
+function selPregunta(idpregunta)
+{
+	$.each(gtexto.preguntas, function(i,item) {
+		 if (item.id==idpregunta)
+		 	pregunta = item;
+	});	
+	if (idpregunta != gtexto.preguntas[0].id)
+		$('#pregunta-' + gtexto.preguntas[0].id).css("background-color", "white");
+	$('#pregunta-' + idpregunta).css("background-color", "lightblue");
+	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
+}
+
+function deselPregunta(idpregunta)
+{
+	$('#pregunta-' + idpregunta).css("background-color", "white");
 }
 
 function dibujaCuadroMovimientos()
