@@ -36,19 +36,21 @@ function dibujaTexto(datos)
 	idpregunta = 0
 	texto = gdatos.textos[0]
 	pregunta = gdatos.preguntas[0]
+	gdatos.opcion = 0;
 	$("#texto").val(texto.texto);
 	$("#pregunta").val(pregunta.texto);
-	$("#opciones").html(armaOpciones(pregunta.posibles));
-	$("#respuesta").val(pregunta.respuesta.texto);	
+	$("#opciones").html(armaOpciones(pregunta.posibles, pregunta.respuesta.id));
 	$("#pregunta").focus();
 
 }
 
-function armaOpciones(lista)
+function armaOpciones(lista, idsel)
 {
 	var cad = "";
 	$.each(lista, function(i,item) {
-		cad = cad + '<input type="radio" name="opciones" value="' + i + '">' + item.texto + '<br>';
+		cad = cad + '<input type="radio" name="opciones" value="' + i + '"' +
+				((item.id==idsel) ? ' checked ' : '') + '>' +
+		 		item.texto + '<br>';
 	});
 	return cad;
 }
