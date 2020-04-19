@@ -38,13 +38,27 @@ function dibujaTexto(datos)
 	pregunta = gdatos.preguntas[0]
 	gdatos.opcion = 0;
 	$("#texto").val(texto.texto);
-	$("#pregunta").val(pregunta.texto);
-	$("#opciones").html(armaOpciones(pregunta.posibles, pregunta.respuesta.id));
+	armaPreguntas(gdatos.preguntas, 0, "#preguntas")
+	//$("#preguntas").val(pregunta.texto);
+	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
 	$("#pregunta").focus();
 
 }
 
-function armaOpciones(lista, idsel)
+function armaPreguntas(preguntas, idsel, tag)
+{
+	var cad = "";
+	$.each(preguntas, function(i,item) {
+		cad = cad + '<textarea id="pregunta-' + i + 
+				'"class="pregunta" style="overflow-y:auto;"' +
+				((item.id==idsel) ? ' checked ' : '') + '>' +
+		 		item.texto + '</textarea>';
+	});
+	$(tag).html(cad);
+	//armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
+}
+
+function armaOpciones(lista, idsel, tag)
 {
 	var cad = "";
 	$.each(lista, function(i,item) {
@@ -52,7 +66,7 @@ function armaOpciones(lista, idsel)
 				((item.id==idsel) ? ' checked ' : '') + '>' +
 		 		item.texto + '<br>';
 	});
-	return cad;
+	$(tag).html(cad);
 }
 
 function dibujaCuadroMovimientos()

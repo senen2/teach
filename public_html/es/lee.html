@@ -36,6 +36,12 @@
             height: 400px; 
             font-family: arial;
         }
+        .pregunta {
+            border: 1px blue;
+        }
+        .pregunta:hover {
+            background-color: lightblue;
+        }
     </style>
 	<script>
 		$( document ).ready(function() {
@@ -69,12 +75,12 @@
 <div style="margin-left: 20px">
     <div class="row"  style="height: 400px">
         <div class="Column">
-            <h3 id="titulo">Texto</h3>
+            <h3>Texto</h3>
             <textarea id="texto"></textarea>
         </div>
         <div class="Column" style="width: 15%;">
             <h3>Pregunta</h3>
-            <textarea id="pregunta" style="width: 100%; height: 400px;"></textarea>
+            <div id="preguntas" style="width: 100%; height: 400px; overflow-y: auto; background-color: white; "></div>
         </div>
         <div class="Column" style="width: 15%; height: 400px;">
             <h3>Posibles</h3>
