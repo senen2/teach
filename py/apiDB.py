@@ -11,8 +11,11 @@ class DB(object):
     def __init__(self, nombrebd="mopp", user="root", passwd=""):
 #         self.db = mdb.connect(host="mysql.myprodu.com",user="carlos",passwd="siempre1",db=nombrebd)
 #         self.db = mdb.connect(host="mysql.gtienda.com",user="carlos",passwd="siempre1",db=nombrebd)
-        self.db = mdb.connect(host="142.93.52.198",user="carlos",passwd="siempre1",db=nombrebd)
+        self.db = mdb.connect(host="142.93.52.198",user="carlos",passwd="siempre1",db=nombrebd) #, charset='utf8')
         self.c = self.db.cursor(mdb.cursors.DictCursor)
+        # self.c.execute('SET NAMES utf8mb4')
+        # self.c.execute('SET CHARACTER SET utf8mb4')
+        # self.c.execute('SET character_set_connection=utf8mb4')
         
     def cierra(self):
         self.commit()
@@ -24,6 +27,10 @@ class DB(object):
 
     def Ejecuta(self, sql):
         self.c.execute(sql)
+        return [row for row in self.c.fetchall()]
+
+    def Ejecutapar(self, sql, par):
+        self.c.execute(sql, par)
         return [row for row in self.c.fetchall()]
 
     def Ejecuta1(self, sql):

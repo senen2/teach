@@ -30,7 +30,6 @@
         .Column {
             display: table-cell;
             background-color: lightblue; /*Optional*/
-            border: 1px dotted;
         }
         #texto {
             width: 100%; 
@@ -70,21 +69,42 @@
     </div>
 </div>
 
-<div style="margin-left: 20px; margin-right: 20px;">
-    <div class="row"  style="height: 400px">
-        <div class="Column">
+<div style="margin-left: 20px; margin-right: 30px;">
+<table>
+    <tr style="background-color: lightblue;">
+        <th>
             <h3>Texto</h3>
-            <textarea id="texto"></textarea>
-        </div>
-        <div class="Column" style="width: 15%;">
+        </th>
+        <th>
             <h3>Pregunta</h3>
-            <div id="preguntas" style="width: 100%; height: 400px; overflow-y: auto; background-color: white; "></div>
-        </div>
-        <div class="Column" style="width: 15%; height: 400px;">
+        </th>
+        <th>
             <h3>Posibles</h3>
+        </th>
+    </tr>
+    <tr style="height: 400px">
+        <td style="border: 1px dotted;">
+            <textarea id="texto"></textarea>
+        </td>
+        <td style="width: 20%; border: 1px dotted;">
+            <div id="preguntas" style="width: 100%; height: 400px; overflow-y: auto; background-color: white;"></div>
+        </td>
+        <td style="width: 20%; height: 400px; border: 1px dotted;">
             <form id="opciones" style="width: 100%; height: 400px; background-color: white"></form>
-        </div>
-    </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button style="width: 100%;" onclick="grabaTexto();"><h3>Grabar</h3></button>
+        </td>
+        <td>
+            <button style="width: 100%;" onclick="agregaPregunta();"><h3>Agregar</h3></button>
+        </td>
+        <td>
+            <button style="width: 100%;" onclick="agregaOpcion();"><h3>Agregar</h3></button>
+        </td>
+    </tr>
+</table>
 </div>
 
 <div id="menu" class="config-menu">
