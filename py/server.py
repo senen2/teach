@@ -5,11 +5,12 @@ Created on 10/07/2013
 @author: Carlos Botello
 '''
 from bottle import route, run, template, response, hook
-from bottle import get, post, request, ServerAdapter
+from bottle import get, post, request, ServerAdapter, BaseRequest
 
 from apiweb import GetServer, PostServer, NodoRuta, GetUrl
 import os
 from apiDB import DB
+from apiapp import *
 
 @hook('after_request')
 def enable_cors():
@@ -18,7 +19,6 @@ def enable_cors():
 @route('/function/:funcion', method='GET')
 def GetFunction(funcion):
     resp = GetServer(funcion)
-    # print('oooooooo', funcion)
 
     par = request.query.decode()
     if "pagina" in par:
@@ -28,7 +28,7 @@ def GetFunction(funcion):
     NodoRuta(funcion, request, pagina)
     
     if request.query.callback:
-        return request.query.callback + "(" + resp.decode('iso-8859-1')  + ")"
+        return request.query.callback + "(" + resp + ")"
     else:
         return resp 
 
@@ -46,7 +46,46 @@ def PostFunction(funcion):
         NodoRuta(funcion, request, pagina)
 
     if request.POST.get('callback'):
-        return request.POST.get('callback') + "(" + resp.decode('iso-8859-1')  + ")"
+        return request.POST.get('callback') + "(" + resp + ")"
+    else:
+        return resp
+
+@route('/functionh/:funcion', method='POST')
+def HttpFunction(funcion):
+    responde(funcion, eval(funcion + "(request)"))
+
+def responde(funcion, resp):
+    par = request.query.decode()
+    if "pagina" in par:
+        pagina = par["pagina"]
+    else:
+        pagina = ""
+    # NodoRuta(funcion, request, pagina)
+
+    if request.POST.get('callback'):
+        return request.POST.get('callback') + "(" + resp + ")"
+    else:
+        return resp
+
+@route('/uploadfile', method='POST')
+def uploadfile():
+    upload = request.files.get('uploadfile')
+    num = request.forms.get('num')
+    if upload:
+        name, ext = os.path.splitext(upload.filename)
+        ext = ext.lower()
+        filename = '/var/www/juri/public_html/tmp/' + name + ext
+        with open(filename, 'wb') as open_file:
+            open_file.write(upload.file.read())
+               
+    datos={}
+    datos['filename'] = filename
+    datos['num'] = num
+    funcion = "SubeArchivo()"
+    resp = PostServer(funcion, json.dumps(datos))
+
+    if request.POST.get('callback'):
+        return request.POST.get('callback') + "(" + resp + ")"
     else:
         return resp
 

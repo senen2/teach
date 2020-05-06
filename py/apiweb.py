@@ -3,7 +3,7 @@ Created on 04/07/2013
 
 @author: Carlos Botello
 '''
-import urllib2
+import urllib.request
 import json
 import datetime, decimal
 
@@ -39,8 +39,8 @@ def GetServer(funcion):
 
 def PostServer(funcion, jdatos):
 #     datos = json.loads(jdatos)
-    b = unicode(jdatos, 'utf-8') # == 'latin-1'
-    datos = json.loads(b)
+    # b = unicode(jdatos, 'utf-8') # == 'latin-1'
+    datos = json.loads(jdatos)
     # print("***", datos)
     a = ""
     if "()" in funcion:

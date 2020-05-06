@@ -1,15 +1,32 @@
-Tal vez reemplazo de blog
+Como un blog
 
-Una persona escribe un texto y elabora los puntos básicos o elementos que quiera resaltar o sobre los que quiera preguntar
+	Una persona escribe un texto y elabora los puntos básicos o elementos que quiera resaltar o sobre los que quiera preguntar
 
-Otras personas lo leen y responden o comentan
+	Otras personas lo leen y responden o comentan
 
-Los lectores deben estar autorizados por el escritor para leer
+	Los lectores deben estar autorizados por el escritor para leer
 
-Tanto lectores como escritores deben tener una cuenta
+	Tanto lectores como escritores deben tener una cuenta
 
-Los escritores llevan un registro de lo que escriben
-Los lectores llevan un registro de lo que leen, contestan y comentan
+	Los escritores llevan un registro de lo que escriben
+	Los lectores llevan un registro de lo que leen, contestan y comentan
 
-Los escritos se pueden clasificar por niveles para los estudiantes
+	Los escritos se pueden clasificar por niveles para los estudiantes
+
+Como una clase
+
+	Hay un profesor que crea la clase y hay alumnos que la reciben
+	Los profesores tienen cuenta
+	Los alumnos no la necesitan a menos que quieran guardar un registro de sus clasees, el cuaderno
+
+	La clase
+		Tiene un pizarrón donde el maestro le muestra al alumno
+			Puede estar creado de antemano o puede crearse en el momento de dar el curso
+			Tal vez las dos formas están creadas de antemano, pero la segunda se escribe lentamente
+			Pueden haber imágenes
+
+		El profesor habla sincronizado con lo que escribe. O sea habla a medida que escribe o muestra una imagen o video
+
+		Hay unos puntos a resaltar y para reforzarlos hace preguntas que tienen varias opciones con una como la correcta
+			El conjunto de estos puntos forma el resumen
 

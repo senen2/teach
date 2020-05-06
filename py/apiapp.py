@@ -41,7 +41,7 @@ def LeeTextoA(email, clave, IDtexto):
     bd.cierra()
     return None
 
-def GrabaTextoA(email, clave, datos): #idtexto, texto):
+def GrabaTextoA1(email, clave, datos): #idtexto, texto):
     bd = DB(nombrebd="aprende")
     usuario = login(email, clave, bd)
     if usuario:
@@ -58,3 +58,18 @@ def GrabaTextoA(email, clave, datos): #idtexto, texto):
     bd.cierra()
     return None
 
+def GrabaTextoA(request): #idtexto, texto):
+    bd = DB(nombrebd="aprende")
+    email = request.forms.get('email')
+    clave = request.forms.get('clave')
+    usuario = login(email, clave, bd)
+    if usuario:
+        upload = request.files.get('texto')
+        texto = upload.file.read().decode()
+        idtexto = request.forms.get('idtexto')
+        rows = bd.Ejecuta("select * from textos where id=%s and idusuario=%s" % (idtexto, usuario['ID']))
+        if rows:
+            bd.Ejecuta("update textos set texto='%s' where id=%s" % (texto, idtexto))
+
+    bd.cierra()
+    return None

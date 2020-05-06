@@ -30,7 +30,7 @@ function LeeTextoA(idtexto, funcion)
 	});	
 }
 
-function GrabaTextoA(texto)
+function GrabaTextoA1(texto)
 {
 	var datos = {}
 	datos['idtexto'] = gtexto.textos[0].id;
@@ -39,4 +39,49 @@ function GrabaTextoA(texto)
         .always(function(){
             nada();
         }); 
+}
+
+function GrabaTextoA2(texto)
+{
+	var datos = {}
+	datos['idtexto'] = gtexto.textos[0].id;
+	datos['texto'] = texto;
+	var enc = encabezado.split("'").join('').split(',');
+	datos['email'] = enc[0];
+	datos['clave'] = enc[1];
+	datos['pagina'] = pagina;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", 'http://' + servidor + '/functionh/GrabaTextoA', true);
+	xhr.setRequestHeader("Content-Type", "text/xml");
+/*	xhr.setRequestHeader("Content-Type", "multipart/form-data");
+*/
+	xhr.onreadystatechange = function() { // Call a function when the state changes.
+	    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+	        nada();
+	    }
+	}
+	xhr.send(texto);
+}
+
+function GrabaTextoA(texto)
+{
+	var datos = new FormData();
+	var btexto = new Blob([texto], { type: "text/xml"});
+	datos.append('idtexto', gtexto.textos[0].id);
+	datos.append('texto', btexto);
+	var enc = encabezado.split("'").join('').split(',');
+	datos.append('email', enc[0]);
+	datos.append('clave', enc[1]);
+	datos.append('pagina', pagina);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", 'http://' + servidor + '/functionh/GrabaTextoA', true);
+
+	xhr.onreadystatechange = function() {
+	    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+	        nada();
+	    }
+	}
+	xhr.send(datos);
 }
