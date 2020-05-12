@@ -50,6 +50,17 @@ function buscaObjetoxID(datos, ID)
 	return null;
 }
 
+function buscaxid(lista, id)
+{
+	resp = null;
+	$.each(lista, function(i,item) {
+		 if (item.id==id)
+		 	return resp = item;
+	});
+	return resp;
+}
+
+
 function esUsuario(datos)
 {
 	return  datos.cuenta!=null && datos.cuentaCat!=null && datos.cuentaCat.ID==datos.cuenta.ID;

@@ -36,8 +36,6 @@ function dibujaTexto(datos)
 	$("#texto").val(gtexto.textos[0].texto);
 	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
 	selPregunta(gtexto.preguntas[0].id)
-	//$("#pregunta").focus();
-
 }
 
 function armaPreguntas(preguntas, idsel, tag)
@@ -55,7 +53,27 @@ function armaPreguntas(preguntas, idsel, tag)
 		 	pregunta = item;
 	});
 	$(tag).html(cad);
-	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
+	idpreguntaSel = 0;
+	armaOpciones(pregunta.posibles, pregunta.idrespuesta, "#opciones");
+}
+
+function selPregunta(idpregunta)
+{
+	if (idpreguntaSel)
+		$('#pregunta-' + idpreguntaSel).css("background-color", "white");
+	
+	if (idpregunta != gtexto.preguntas[0].id)
+		$('#pregunta-' + gtexto.preguntas[0].id).css("background-color", "white");
+
+	$('#pregunta-' + idpregunta).css("background-color", "lightblue");
+
+	var pregunta = buscaxid(gtexto.preguntas, idpregunta);
+	armaOpciones(pregunta.posibles, pregunta.idrespuesta, "#opciones");
+}
+
+function deselPregunta(idpregunta)
+{
+	idpreguntaSel = idpregunta;
 }
 
 function armaOpciones(lista, idsel, tag)
@@ -67,23 +85,6 @@ function armaOpciones(lista, idsel, tag)
 		 		item.texto + '<br>';
 	});
 	$(tag).html(cad);
-}
-
-function selPregunta(idpregunta)
-{
-	$.each(gtexto.preguntas, function(i,item) {
-		 if (item.id==idpregunta)
-		 	pregunta = item;
-	});	
-	if (idpregunta != gtexto.preguntas[0].id)
-		$('#pregunta-' + gtexto.preguntas[0].id).css("background-color", "white");
-	$('#pregunta-' + idpregunta).css("background-color", "lightblue");
-	armaOpciones(pregunta.posibles, pregunta.respuesta.id, "#opciones");
-}
-
-function deselPregunta(idpregunta)
-{
-	$('#pregunta-' + idpregunta).css("background-color", "white");
 }
 
 function grabaTexto()

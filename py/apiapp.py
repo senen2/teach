@@ -28,48 +28,56 @@ def LeeTextoA(email, clave, IDtexto):
         response["preguntas"] = bd.Ejecuta("select * from preguntas where idtexto=%s" % (IDtexto))
         for pregunta in response['preguntas']:
             pregunta['posibles'] = bd.Ejecuta("select * from posibles where idpregunta=%s" % pregunta['id'])
-            rows = bd.Ejecuta("""
-                SELECT posibles.* FROM respuestas 
-                    INNER JOIN posibles ON posibles.idpregunta=respuestas.idpregunta
-                WHERE respuestas.idpregunta=%s 
-                    AND posibles.id=respuestas.idposibles
-                """ % pregunta['id'])
-            if rows:
-                pregunta['respuesta'] = rows[0]
         bd.cierra()
         return response
     bd.cierra()
     return None
 
-def GrabaTextoA1(email, clave, datos): #idtexto, texto):
-    bd = DB(nombrebd="aprende")
-    usuario = login(email, clave, bd)
-    if usuario:
-        # text = bd.escape_string(texto.encode("UTF-8"))
-        # text = texto.decode("utf8").encode("utf8")
-        texto = datos['texto']
-        idtexto = datos['idtexto']
-        rows = bd.Ejecuta("select * from textos where id=%s and idusuario=%s" % (idtexto, usuario['ID']))
-        if rows:
-            #bd.Ejecuta("update textos set texto='%s' where id=%s" % (text.decode("UTF-8"), idtexto))
-            # print("update textos set texto='%s' where id=%s" % (texto.decode("UTF-8"), idtexto))
-            bd.Ejecuta("update textos set texto='%s' where id=%s" % (texto, idtexto))
-
-    bd.cierra()
-    return None
-
-def GrabaTextoA(request): #idtexto, texto):
+def GrabaTextoA(request):
     bd = DB(nombrebd="aprende")
     email = request.forms.get('email')
     clave = request.forms.get('clave')
     usuario = login(email, clave, bd)
     if usuario:
-        upload = request.files.get('texto')
-        texto = upload.file.read().decode()
         idtexto = request.forms.get('idtexto')
-        rows = bd.Ejecuta("select * from textos where id=%s and idusuario=%s" % (idtexto, usuario['ID']))
-        if rows:
+        if duenoTexto(idtexto, bd) == usuario['ID']:
+            upload = request.files.get('texto')
+            texto = upload.file.read().decode()
             bd.Ejecuta("update textos set texto='%s' where id=%s" % (texto, idtexto))
 
     bd.cierra()
     return None
+
+def GrabaPreguntaA(email, clave, idtexto, texto, idpreguntaSel):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        if duenoTexto(idtexto, bd) == usuario['ID']:
+            if idpreguntaSel:
+                orden = rows[0]['orden'] + 1
+            else:
+                orden = 1
+            bd.Ejecuta("insert into preguntas (idtexto, texto, orden) values(%s, '%s', %s)"%(idtexto, texto, orden))
+
+    bd.cierra()
+    return None
+
+def GrabaPosibleA(email, clave, idpregunta, texto):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, '%s')"%(idpregunta, texto))
+
+    bd.cierra()
+    return None
+
+def GrabaRespuestaA(email, clave, idpregunta, idrespuesta):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            bd.Ejecuta("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
+    bd.cierra()
+    return None
+

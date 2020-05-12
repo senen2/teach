@@ -1,0 +1,5 @@
+Editar/Agregar preguntas
+Editar/Agregar opciones
+
+Contestar preguntas, seleccionando opción
+
