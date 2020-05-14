@@ -19,7 +19,7 @@ def duenoPregunta(idpregunta, bd):
             select idusuario 
             from preguntas
                 inner join textos on textos.id=preguntas.idtexto 
-            where id=%s"""%idpregunta)
+            where preguntas.id=%s"""%idpregunta)
         )
 
 def duenoTexto(idtexto, bd):
@@ -30,3 +30,9 @@ def valUsuario(rows):
         return rows[0]['idusuario']
     else:
         return 0
+
+def leePreguntas(idtexto, bd):
+    resp = bd.Ejecuta("select * from preguntas where idtexto=%s order by orden" % (idtexto))
+    for pregunta in resp:
+        pregunta['posibles'] = bd.Ejecuta("select * from posibles where idpregunta=%s" % pregunta['id'])
+    return resp

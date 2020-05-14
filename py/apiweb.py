@@ -88,6 +88,6 @@ def convert(obj):
 def NodoRuta(funcion, request, pagina):
 #     f = funcion.split("(")[0]
     f = funcion.replace("'",'"')
-    email = funcion.split(",")[0].split("(")[1]
+    email = funcion.split(",")[0].split("(")[1].strip("'").strip('"')
     ip = request.remote_addr
     GrabaNodoRuta(email, ip, f, pagina)

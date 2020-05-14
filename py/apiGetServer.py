@@ -8,7 +8,7 @@ from apiDB import DB
     
 def GrabaNodoRuta(email, ip, funcion, pag):
     bd = DB()
-    usuario = bd.Ejecuta("select * from usuarios where email=%s" % email)
+    usuario = bd.Ejecuta("select * from usuarios where email='%s'" % email)
     if usuario:
         usuario = usuario[0]
     else:

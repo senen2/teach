@@ -35,27 +35,37 @@ function dibujaTexto(datos)
 
 	$("#texto").val(gtexto.textos[0].texto);
 	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
-	selPregunta(gtexto.preguntas[0].id)
-}
+/*	selPregunta(gtexto.preguntas[0].id)
+*/}
+
+// preguntas --------------------------------------
 
 function armaPreguntas(preguntas, idsel, tag)
 {
 	var cad = "", pregunta;
 	$.each(preguntas, function(i,item) {
-		cad = cad + '<textarea id="pregunta-' + item.id + 
-				'"class="pregunta"' +
-				//((item.id==idsel) ? ' background-color: lightblue;' : '') + 
-				' onmouseover="selPregunta(' + item.id + ');"' + 
-				' onmouseout="deselPregunta(' + item.id + ');"' + 
-				'>' +
-		 		item.texto + '</textarea>';
+		cad = cad + armaPregunta(item.id, item.texto);
 		 if (item.id==idsel)
 		 	pregunta = item;
 	});
 	$(tag).html(cad);
-	idpreguntaSel = 0;
+	idpreguntaSel = idsel;
 	armaOpciones(pregunta.posibles, pregunta.idrespuesta, "#opciones");
+	selPregunta(idsel);
 }
+
+function armaPregunta(id, texto)
+{
+	return '<textarea id="pregunta-' + id + 
+				'"class="pregunta" draggable="true"' +
+				//((id==idsel) ? ' background-color: lightblue;' : '') + 
+				' onmouseover="selPregunta(' + id + ');"' + 
+				' onmouseout="deselPregunta(' + id + ');"' + 
+				' onchange="grabaPregunta(this, ' + id + ');"' + 
+				' ondrag="drag(event);"' + 
+				'>' +
+		 		texto + '</textarea>';
+} 
 
 function selPregunta(idpregunta)
 {
@@ -76,15 +86,31 @@ function deselPregunta(idpregunta)
 	idpreguntaSel = idpregunta;
 }
 
+function agregaPregunta(id)
+{
+	var a = $(armaPregunta(id, 'funciona muy bien'));
+	$("#preguntas").append(a);
+	a.focus();
+}
+
+function grabaPregunta(elem, id)
+{
+	GrabaPreguntaA(elem.value, id, nada);
+}
+
+// opciones ----------------------------------------
+
 function armaOpciones(lista, idsel, tag)
 {
-	var cad = "";
-	$.each(lista, function(i,item) {
-		cad = cad + '<input type="radio" name="opciones" value="' + item.id + '"' +
-				((item.id==idsel) ? ' checked ' : '') + '>' +
-		 		item.texto + '<br>';
-	});
-	$(tag).html(cad);
+	if (typeof lista != 'undefined') {
+		var cad = "";
+		$.each(lista, function(i,item) {
+			cad = cad + '<input type="radio" name="opciones" value="' + item.id + '"' +
+					((item.id==idsel) ? ' checked ' : '') + '>' +
+			 		item.texto + '<br>';
+		});
+		$(tag).html(cad);		
+	}
 }
 
 function grabaTexto()
@@ -92,12 +118,44 @@ function grabaTexto()
 	GrabaTextoA($('#texto').val())
 }
 
-function agregaPregunta()
+function agregaOpcion()
+{
+	$("#titPop").html("Nueva Opcion");
+	$("#divPop").show();
+};
+
+function agregaRespuesta()
 {
 	
 }
 
-function agregaOpcion()
+function cancelar()
 {
-	
+	$("#divPop").hide();
+}
+
+// drag and drop -------------------------------------
+
+function allowDrop(ev) 
+{
+	ev.preventDefault();
+}
+
+function drop(ev) 
+{
+	ev.preventDefault();
+	var iddestino = ev.target.id.split('-')[1]; 
+	OrdenaPreguntaA(gidorigen, iddestino, dibPreguntas)
+}
+
+function drag(ev) 
+{
+	ev.preventDefault();
+	gidorigen = ev.target.id.split('-')[1];
+}
+
+function dibPreguntas(preguntas)
+{
+	gtexto.preguntas = preguntas;
+	armaPreguntas(preguntas, gidorigen, "#preguntas");
 }
