@@ -92,8 +92,14 @@ function sendPost(datos, funcionh, funcionret)
 
 function OrdenaPreguntaA(idorigen, iddestino, funcionret)
 {
-	var p = "," + idorigen + "," + iddestino
+	var p = "," + idorigen + "," + iddestino;
 	sendGet(p, 'OrdenaPreguntaA', funcionret); 
+}
+
+function EliminaPreguntaA(idpregunta, funcionret)
+{
+	var p = "," + idpregunta;
+	sendGet(p, 'EliminaPreguntaA', funcionret); 
 }
 
 function sendGet(params, funcion, funcionret)

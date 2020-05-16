@@ -94,15 +94,19 @@ def GrabaRespuestaA(email, clave, idpregunta, idrespuesta):
     return None
 
 def AgregaPreguntaA(email, clave, idtexto):
-    bd = DB(nombrebd="aprende")
-    usuario = login(email, clave, bd)
-    if usuario:
-        if duenoTexto(idtexto, bd) == usuario['ID']:
-            bd.Ejecuta("insert into preguntas (idtexto) values(%s)"%(idtexto))
-            id = bd.UltimoID()
+	bd = DB(nombrebd="aprende")
+	usuario = login(email, clave, bd)
+	if usuario:
+		if duenoTexto(idtexto, bd) == usuario['ID']:
+			rows = bd.Ejecuta("select orden from preguntas where idtexto=%s order by orden desc limit 1"%idtexto)
+			orden = 1
+			if rows:
+				orden = rows[0]['orden'] + 1
+			bd.Ejecuta("insert into preguntas (idtexto, orden) values(%s, %s)"%(idtexto, orden))
+			id = bd.UltimoID()
 
-    bd.cierra()
-    return id
+	bd.cierra()
+	return id
 
 def OrdenaPreguntaA(email, clave, idorigen, iddestino):
     bd = DB(nombrebd="aprende")
@@ -116,6 +120,20 @@ def OrdenaPreguntaA(email, clave, idorigen, iddestino):
                 orden = rows['orden'] - 0.01
                 bd.Ejecuta("update preguntas set orden=%s where id=%s"%(orden, idorigen))
                 resp = leePreguntas(rows['idtexto'], bd)
+    
+    bd.cierra()
+    return resp
+
+def EliminaPreguntaA(email, clave, idpregunta):
+    bd = DB(nombrebd="aprende")
+    resp = None
+    usuario = login(email, clave, bd)
+    if usuario:
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            rows = bd.Ejecuta("select orden, idtexto from preguntas where id=%s"%idpregunta)
+            if rows:
+	            bd.Ejecuta("delete from preguntas where id=%s"%idpregunta)
+	            resp = leePreguntas(rows[0]['idtexto'], bd)
     
     bd.cierra()
     return resp
