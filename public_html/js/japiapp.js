@@ -72,6 +72,23 @@ function GrabaPreguntaA(texto, idpregunta, funcion)
 	sendPost(datos, "GrabaPreguntaA", funcion);
 }
 
+function GrabaDatoA(tabla, texto, id, funcion)
+{
+	var datos = new FormData();
+	datos.append('tabla', tabla);
+	datos.append('id', id);
+	datos.append('texto', texto);
+	sendPost(datos, "GrabaDatoA", funcion);
+}
+
+function GrabaRespuestaA(idpregunta, idrespuesta)
+{
+	var datos = new FormData();
+	datos.append('idpregunta', idpregunta);
+	datos.append('idrespuesta', idrespuesta);
+	sendPost(datos, "GrabaRespuestaA", nada);
+}
+
 function sendPost(datos, funcionh, funcionret)
 {
 	var enc = encabezado.split("'").join('').split(',');
@@ -121,17 +138,6 @@ function GrabaPosibleA(texto, idpregunta)
 	datos['idpregunta'] = idpregunta;
 	datos['texto'] = texto;
     $.post( 'http://' + servidor + '/functiond/GrabaPosibleA(' + encabezado + ')?pagina=' + pagina, JSON.stringify(datos))
-        .always(function(){
-            nada();
-        }); 
-}
-
-function GrabaRespuestaA(idrespuesta, idpregunta)
-{
-	var datos = {}
-	datos['idpregunta'] = idpregunta;
-	datos['idrespuesta'] = idrespuesta;
-    $.post( 'http://' + servidor + '/functiond/GrabaRespuestaA(' + encabezado + ')?pagina=' + pagina, JSON.stringify(datos))
         .always(function(){
             nada();
         }); 

@@ -60,16 +60,24 @@ def GrabaPreguntaA(request):
     bd.cierra()
     return None
 
-def GrabaPreguntaA1(email, clave, idtexto, texto, idpreguntaDespues):
+
+def GrabaDatoA(request):
     bd = DB(nombrebd="aprende")
+    email = request.forms.get('email')
+    clave = request.forms.get('clave')
     usuario = login(email, clave, bd)
     if usuario:
-        if duenoTexto(idtexto, bd) == usuario['ID']:
-            if idpreguntaDespues:
-                orden = rows[0]['orden'] - 0.01
-            else:
-                orden = 1
-            bd.Ejecuta("insert into preguntas (idtexto, texto, orden) values(%s, '%s', %s)"%(idtexto, texto, orden))
+        id = request.forms.get('id')
+        tabla = request.forms.get('tabla')
+        if tabla=="preguntas":
+            idpregunta = id
+        else:
+            rows = bd.Ejecuta("select idpregunta from posibles where id=%s"%id)
+            idpregunta = rows[0]['idpregunta']
+        
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            texto = request.forms.get('texto')
+            bd.Ejecuta("update %s set texto='%s' where id=%s"%(tabla, texto, id))
 
     bd.cierra()
     return None
@@ -84,10 +92,15 @@ def GrabaPosibleA(email, clave, idpregunta, texto):
     bd.cierra()
     return None
 
-def GrabaRespuestaA(email, clave, idpregunta, idrespuesta):
+def GrabaRespuestaA(request):
     bd = DB(nombrebd="aprende")
+    email = request.forms.get('email')
+    clave = request.forms.get('clave')
     usuario = login(email, clave, bd)
     if usuario:
+        idpregunta = request.forms.get('idpregunta')
+        idrespuesta = request.forms.get('idrespuesta')
+        # print("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
         if duenoPregunta(idpregunta, bd) == usuario['ID']:
             bd.Ejecuta("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
     bd.cierra()

@@ -4,9 +4,9 @@
 
 function inicioLee()
 {
-	// encabezado = getCookie("encabezado");
 	encabezado = localStorage.getItem("encabezado");
 	idtexto = 1;
+	modo = "E";
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
@@ -35,8 +35,7 @@ function dibujaTexto(datos)
 
 	$("#texto").val(gtexto.textos[0].texto);
 	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
-/*	selPregunta(gtexto.preguntas[0].id)
-*/}
+}
 
 // preguntas --------------------------------------
 
@@ -68,19 +67,6 @@ function armaPregunta(id, texto)
 		 		'<img id="imgEli-' + id + '" class="elimina DN" src="../images/delete.png"' + 
 		 		' width="16px" onclick="eliPregunta(' + id + ');" /></div>';
 } 
-
-function sobrePreguntas(e)
-{
-	var pos = $("#xxx").position();
-	x=e.clientX;
-	y=e.clientY;
-	$("#imgEli").css("top", y - pos.top - 10);
-	$("#imgEli").css("left", x - pos.left);
-	$("#imgEli").show();
-/*	$("#imgEli").css("top", pos.top);
-	$("#imgEli").css("left", pos.left);
-*/
-}
 
 function selPregunta(idpregunta)
 {
@@ -138,12 +124,39 @@ function armaOpciones(lista, idsel, tag)
 	if (typeof lista != 'undefined') {
 		var cad = "";
 		$.each(lista, function(i,item) {
-			cad = cad + '<input type="radio" name="opciones" value="' + item.id + '"' +
-					((item.id==idsel) ? ' checked ' : '') + '>' +
-			 		item.texto + '<br>';
+			if (modo=="E") {
+				cad = cad + '<div style="display: table">' +
+					'<input type="text" id="posible-' + item.id + '"' + 
+						' value="' + item.texto + '" style="display: table-cell;"' +
+						' onchange="grabaPosible(this, ' + item.id + ');"/>' +
+					'<input type="checkbox" style="display: table-cell;" ' +
+						((item.id==idsel) ? ' checked ' : '') + 
+						' onchange="grabaRespuesta(' + item.id + ');"/>' +
+					'</div>';
+			}
+			else {
+				cad = cad + '<input type="radio" name="opciones" value="' + item.id + '"' +
+						((item.id==idsel) ? ' checked ' : '') + '>' +
+				 		item.texto + '<br>';
+			}
 		});
 		$(tag).html(cad);		
 	}
+}
+
+function grabaRespuesta(id)
+{
+	var preg = buscaxid(gtexto.preguntas, idpreguntaSel);
+	preg.idrespuesta = id;
+	GrabaRespuestaA(idpreguntaSel, id);
+}
+
+function grabaPosible(elem, id)
+{
+	GrabaDatoA('posibles', elem.value, id, nada);
+	var preg = buscaxid(gtexto.preguntas, idpreguntaSel);
+	var posible = buscaxid(preg.posibles, id);
+	posible.texto = elem.value;
 }
 
 function grabaTexto()
