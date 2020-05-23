@@ -36,3 +36,15 @@ def leePreguntas(idtexto, bd):
     for pregunta in resp:
         pregunta['posibles'] = bd.Ejecuta("select * from posibles where idpregunta=%s" % pregunta['id'])
     return resp
+
+def idtexto_idpregunta(idposible, bd):
+    rows = bd.Ejecuta("select idpregunta from posibles where id=%s"%idposible)
+    if rows:
+        idpregunta = rows[0]['idpregunta']
+        rows = bd.Ejecuta("select idtexto from preguntas where id=%s"%idpregunta)
+        if rows:
+            idtexto = rows[0]['idtexto']
+            return idtexto, idpregunta
+
+    return 0, 0
+

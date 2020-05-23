@@ -1,9 +1,7 @@
-/**
+/*
  * @author botpi
  */
-
-/*-------------------- index
-*/    
+    
 function Login(funcion)
 {
 	$.ajax({
@@ -16,7 +14,7 @@ function Login(funcion)
 	});	
 }
 
-function nada() {}
+// texto --------------------------------------
 
 function LeeTextoA(idtexto, funcion)
 {
@@ -52,7 +50,9 @@ function GrabaTextoA(texto)
 	xhr.send(datos);
 }
 
-function AgregaPreguntaA(idtexto, funcion)
+// preguntas ---------------------------------
+
+/*function AgregaPreguntaA(idtexto, funcion)
 {
 	$.ajax({
 		url: "http://" + servidor + "/function/AgregaPreguntaA(" + encabezado + "," + idtexto + ")?pagina=" + pagina,
@@ -63,22 +63,32 @@ function AgregaPreguntaA(idtexto, funcion)
 		}
 	});	
 }
+*/
 
-function GrabaPreguntaA(texto, idpregunta, funcion)
+function AgregaPreguntaA(idtexto, funcionret)
+{
+	var p = "," + idtexto;
+	sendGet(p, 'AgregaPreguntaA', funcionret); 
+}
+
+function ModificaPreguntaA(texto, idpregunta, funcion)
 {
 	var datos = new FormData();
 	datos.append('idpregunta', idpregunta);
 	datos.append('texto', texto);
-	sendPost(datos, "GrabaPreguntaA", funcion);
+	sendPost(datos, "ModificaPreguntaA", funcion);
 }
 
-function GrabaDatoA(tabla, texto, id, funcion)
+function EliminaPreguntaA(idpregunta, funcionret)
 {
-	var datos = new FormData();
-	datos.append('tabla', tabla);
-	datos.append('id', id);
-	datos.append('texto', texto);
-	sendPost(datos, "GrabaDatoA", funcion);
+	var p = "," + idpregunta;
+	sendGet(p, 'EliminaPreguntaA', funcionret); 
+}
+
+function OrdenaPreguntaA(idorigen, iddestino, funcionret)
+{
+	var p = "," + idorigen + "," + iddestino;
+	sendGet(p, 'OrdenaPreguntaA', funcionret); 
 }
 
 function GrabaRespuestaA(idpregunta, idrespuesta)
@@ -88,6 +98,33 @@ function GrabaRespuestaA(idpregunta, idrespuesta)
 	datos.append('idrespuesta', idrespuesta);
 	sendPost(datos, "GrabaRespuestaA", nada);
 }
+
+// posibles -----------------------------------
+
+function AgregaPosibleA(idpregunta, funcionret)
+{
+	var p = "," + idpregunta;
+	sendGet(p, 'AgregaPosibleA', funcionret); 
+}
+
+function ModificaDatoA(tabla, texto, id, funcion)
+{
+	var datos = new FormData();
+	datos.append('tabla', tabla);
+	datos.append('id', id);
+	datos.append('texto', texto);
+	sendPost(datos, "ModificaDatoA", funcion);
+}
+
+function EliminaPosibleA(idposible, funcionret)
+{
+	var p = "," + idposible;
+	sendGet(p, 'EliminaPosibleA', funcionret); 
+}
+
+// genericos ----------------------
+
+function nada() {}
 
 function sendPost(datos, funcionh, funcionret)
 {
@@ -107,18 +144,6 @@ function sendPost(datos, funcionh, funcionret)
 	xhr.send(datos);	
 }
 
-function OrdenaPreguntaA(idorigen, iddestino, funcionret)
-{
-	var p = "," + idorigen + "," + iddestino;
-	sendGet(p, 'OrdenaPreguntaA', funcionret); 
-}
-
-function EliminaPreguntaA(idpregunta, funcionret)
-{
-	var p = "," + idpregunta;
-	sendGet(p, 'EliminaPreguntaA', funcionret); 
-}
-
 function sendGet(params, funcion, funcionret)
 {
 	$.ajax({
@@ -129,16 +154,4 @@ function sendGet(params, funcion, funcionret)
 			funcionret(response);
 		}
 	});	
-}
-
-
-function GrabaPosibleA(texto, idpregunta)
-{
-	var datos = {}
-	datos['idpregunta'] = idpregunta;
-	datos['texto'] = texto;
-    $.post( 'http://' + servidor + '/functiond/GrabaPosibleA(' + encabezado + ')?pagina=' + pagina, JSON.stringify(datos))
-        .always(function(){
-            nada();
-        }); 
 }

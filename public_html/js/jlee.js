@@ -37,7 +37,18 @@ function dibujaTexto(datos)
 	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
 }
 
+function grabaTexto()
+{
+	GrabaTextoA($('#texto').val())
+}
+
 // preguntas --------------------------------------
+
+function dibPreguntas(preguntas)
+{
+	gtexto.preguntas = preguntas;
+	armaPreguntas(preguntas, gidorigen, "#preguntas");
+}
 
 function armaPreguntas(preguntas, idsel, tag)
 {
@@ -49,7 +60,7 @@ function armaPreguntas(preguntas, idsel, tag)
 	});
 	$(tag).html(cad);
 	idpreguntaSel = idsel;
-	armaOpciones(pregunta.posibles, pregunta.idrespuesta, "#opciones");
+	armaPosibles(pregunta.posibles, pregunta.idrespuesta, "#opciones");
 	selPregunta(idsel);
 }
 
@@ -60,7 +71,7 @@ function armaPregunta(id, texto)
 				' draggable="true"' +
 				' onmouseover="selPregunta(' + id + ');"' + 
 				' onmouseout="deselPregunta(' + id + ');"' + 
-				' onchange="grabaPregunta(this, ' + id + ');"' + 
+				' onchange="modificaPregunta(this, ' + id + ');"' + 
 				' ondrag="drag(event);"' + 
 				'>' +
 		 		texto + '</textarea>' +
@@ -81,7 +92,7 @@ function selPregunta(idpregunta)
 	$('#imgEli-' + idpregunta).show();
 
 	var pregunta = buscaxid(gtexto.preguntas, idpregunta);
-	armaOpciones(pregunta.posibles, pregunta.idrespuesta, "#opciones");
+	armaPosibles(pregunta.posibles, pregunta.idrespuesta, "#opciones");
 }
 
 function deselPregunta(idpregunta)
@@ -89,18 +100,16 @@ function deselPregunta(idpregunta)
 	idpreguntaSel = idpregunta;
 }
 
-function agregaPregunta(id)
+function agregaPregunta(datos)
 {
-	var a = $(armaPregunta(id, 'funciona muy bien'));
-	$("#preguntas").append(a);
-	a.focus();
+	gidorigen = datos.id;
+	dibPreguntas(datos.preguntas);
 	$('#preguntas').scrollTop(800);
-	selPregunta(id);
 }
 
-function grabaPregunta(elem, id)
+function modificaPregunta(elem, id)
 {
-	GrabaPreguntaA(elem.value, id, nada);
+	ModificaPreguntaA(elem.value, id, nada);
 }
 
 function eliPregunta(id)
@@ -111,15 +120,16 @@ function eliPregunta(id)
 	}
 }
 
-function dibPreguntas(preguntas)
+function grabaRespuesta(id)
 {
-	gtexto.preguntas = preguntas;
-	armaPreguntas(preguntas, gidorigen, "#preguntas");
+	var preg = buscaxid(gtexto.preguntas, idpreguntaSel);
+	preg.idrespuesta = id;
+	GrabaRespuestaA(idpreguntaSel, id);
 }
 
-// opciones ----------------------------------------
+// posibles ----------------------------------------
 
-function armaOpciones(lista, idsel, tag)
+function armaPosibles(lista, idsel, tag)
 {
 	if (typeof lista != 'undefined') {
 		var cad = "";
@@ -128,7 +138,9 @@ function armaOpciones(lista, idsel, tag)
 				cad = cad + '<div style="display: table">' +
 					'<input type="text" id="posible-' + item.id + '"' + 
 						' value="' + item.texto + '" style="display: table-cell;"' +
-						' onchange="grabaPosible(this, ' + item.id + ');"/>' +
+						' onchange="modificaPosible(this, ' + item.id + ');"/>' +
+			 		'<img id="elipos-' + item.id + '" src="../images/delete.png"' + 
+				 		' width="16px" onclick="eliPosible(' + item.id + ');" />' +
 					'<input type="checkbox" style="display: table-cell;" ' +
 						((item.id==idsel) ? ' checked ' : '') + 
 						' onchange="grabaRespuesta(' + item.id + ');"/>' +
@@ -144,40 +156,26 @@ function armaOpciones(lista, idsel, tag)
 	}
 }
 
-function grabaRespuesta(id)
+function agregaPosible(datos)
 {
-	var preg = buscaxid(gtexto.preguntas, idpreguntaSel);
-	preg.idrespuesta = id;
-	GrabaRespuestaA(idpreguntaSel, id);
-}
+	gidorigen = idpreguntaSel;
+	dibPreguntas(datos);
+};
 
-function grabaPosible(elem, id)
+function modificaPosible(elem, id)
 {
-	GrabaDatoA('posibles', elem.value, id, nada);
+	ModificaDatoA('posibles', elem.value, id, nada);
 	var preg = buscaxid(gtexto.preguntas, idpreguntaSel);
 	var posible = buscaxid(preg.posibles, id);
 	posible.texto = elem.value;
 }
 
-function grabaTexto()
+function eliPosible(id)
 {
-	GrabaTextoA($('#texto').val())
-}
-
-function agregaOpcion()
-{
-	$("#titPop").html("Nueva Opcion");
-	$("#divPop").show();
-};
-
-function agregaRespuesta()
-{
-	
-}
-
-function cancelar()
-{
-	$("#divPop").hide();
+	if (window.confirm("seguro de borrar esta respuesta posible")) {
+		gidorigen = idpreguntaSel;
+		EliminaPosibleA(id, dibPreguntas);
+	}
 }
 
 // drag and drop -------------------------------------
@@ -198,4 +196,11 @@ function drag(ev)
 {
 	ev.preventDefault();
 	gidorigen = ev.target.id.split('-')[1];
+}
+
+// varias ------------------------------------------
+
+function cancelar()
+{
+
 }

@@ -5,7 +5,7 @@ Created on 12/04/2020
 @author: Botpi
 '''
 from apiDB import DB
-from subapp import *
+from apisub import *
 from comun import *
 
 def Login(email, clave):
@@ -17,6 +17,8 @@ def Login(email, clave):
     
     bd.cierra()
     return None
+
+# texto ----------------------------------
 
 def LeeTextoA(email, clave, idtexto):
     bd = DB(nombrebd="aprende")
@@ -46,7 +48,33 @@ def GrabaTextoA(request):
     bd.cierra()
     return None
 
-def GrabaPreguntaA(request):
+# preguntas--------------------------
+
+def AgregaPreguntaA(email, clave, idtexto):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    resp = {}
+    if usuario:
+        if duenoTexto(idtexto, bd) == usuario['ID']:
+            rows = bd.Ejecuta("select orden from preguntas where idtexto=%s order by orden desc limit 1"%idtexto)
+            
+            orden = 1
+            if rows:
+                orden = rows[0]['orden'] + 1
+            
+            bd.Ejecuta("insert into preguntas (idtexto, orden) values(%s, %s)"%(idtexto, orden))
+            idpregunta = bd.UltimoID()
+            bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, 'A')"%idpregunta)
+            bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, 'B')"%idpregunta)
+            bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, 'C')"%idpregunta)
+
+            resp['id'] = idpregunta
+            resp['preguntas'] = leePreguntas(idtexto, bd)
+
+    bd.cierra()
+    return resp
+
+def ModificaPreguntaA(request):
     bd = DB(nombrebd="aprende")
     email = request.forms.get('email')
     clave = request.forms.get('clave')
@@ -59,67 +87,6 @@ def GrabaPreguntaA(request):
 
     bd.cierra()
     return None
-
-
-def GrabaDatoA(request):
-    bd = DB(nombrebd="aprende")
-    email = request.forms.get('email')
-    clave = request.forms.get('clave')
-    usuario = login(email, clave, bd)
-    if usuario:
-        id = request.forms.get('id')
-        tabla = request.forms.get('tabla')
-        if tabla=="preguntas":
-            idpregunta = id
-        else:
-            rows = bd.Ejecuta("select idpregunta from posibles where id=%s"%id)
-            idpregunta = rows[0]['idpregunta']
-        
-        if duenoPregunta(idpregunta, bd) == usuario['ID']:
-            texto = request.forms.get('texto')
-            bd.Ejecuta("update %s set texto='%s' where id=%s"%(tabla, texto, id))
-
-    bd.cierra()
-    return None
-
-def GrabaPosibleA(email, clave, idpregunta, texto):
-    bd = DB(nombrebd="aprende")
-    usuario = login(email, clave, bd)
-    if usuario:
-        if duenoPregunta(idpregunta, bd) == usuario['ID']:
-            bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, '%s')"%(idpregunta, texto))
-
-    bd.cierra()
-    return None
-
-def GrabaRespuestaA(request):
-    bd = DB(nombrebd="aprende")
-    email = request.forms.get('email')
-    clave = request.forms.get('clave')
-    usuario = login(email, clave, bd)
-    if usuario:
-        idpregunta = request.forms.get('idpregunta')
-        idrespuesta = request.forms.get('idrespuesta')
-        # print("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
-        if duenoPregunta(idpregunta, bd) == usuario['ID']:
-            bd.Ejecuta("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
-    bd.cierra()
-    return None
-
-def AgregaPreguntaA(email, clave, idtexto):
-	bd = DB(nombrebd="aprende")
-	usuario = login(email, clave, bd)
-	if usuario:
-		if duenoTexto(idtexto, bd) == usuario['ID']:
-			rows = bd.Ejecuta("select orden from preguntas where idtexto=%s order by orden desc limit 1"%idtexto)
-			orden = 1
-			if rows:
-				orden = rows[0]['orden'] + 1
-			bd.Ejecuta("insert into preguntas (idtexto, orden) values(%s, %s)"%(idtexto, orden))
-			id = bd.UltimoID()
-
-	bd.cierra()
-	return id
 
 def OrdenaPreguntaA(email, clave, idorigen, iddestino):
     bd = DB(nombrebd="aprende")
@@ -145,8 +112,85 @@ def EliminaPreguntaA(email, clave, idpregunta):
         if duenoPregunta(idpregunta, bd) == usuario['ID']:
             rows = bd.Ejecuta("select orden, idtexto from preguntas where id=%s"%idpregunta)
             if rows:
-	            bd.Ejecuta("delete from preguntas where id=%s"%idpregunta)
-	            resp = leePreguntas(rows[0]['idtexto'], bd)
+                bd.Ejecuta("delete from posibles where idpregunta=%s"%idpregunta)
+                bd.Ejecuta("delete from preguntas where id=%s"%idpregunta)
+                resp = leePreguntas(rows[0]['idtexto'], bd)
+
+    bd.cierra()
+    return resp
+
+def GrabaRespuestaA(request):
+    bd = DB(nombrebd="aprende")
+    email = request.forms.get('email')
+    clave = request.forms.get('clave')
+    usuario = login(email, clave, bd)
+    if usuario:
+        idpregunta = request.forms.get('idpregunta')
+        idrespuesta = request.forms.get('idrespuesta')
+        # print("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            bd.Ejecuta("update preguntas set idrespuesta=%s where id=%s"%(idrespuesta, idpregunta))
+    bd.cierra()
+    return None
+
+# posibles --------------------------
+
+def AgregaPosibleA(email, clave, idpregunta):
+    bd = DB(nombrebd="aprende")
+    resp = None
+    usuario = login(email, clave, bd)
+    if usuario:
+        rows = bd.Ejecuta("select idtexto from preguntas where id=%s"%idpregunta)
+        if rows:
+            idtexto = rows[0]['idtexto']
+            if duenoPregunta(idpregunta, bd) == usuario['ID']:
+                bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, 'X')"%idpregunta)
+                resp = leePreguntas(idtexto, bd)
+    
+    bd.cierra()
+    return resp
+
+def ModificaDatoA(request):
+    bd = DB(nombrebd="aprende")
+    email = request.forms.get('email')
+    clave = request.forms.get('clave')
+    usuario = login(email, clave, bd)
+    if usuario:
+        id = request.forms.get('id')
+        tabla = request.forms.get('tabla')
+        if tabla=="preguntas":
+            idpregunta = id
+        else:
+            rows = bd.Ejecuta("select idpregunta from posibles where id=%s"%id)
+            idpregunta = rows[0]['idpregunta']
+        
+        if duenoPregunta(idpregunta, bd) == usuario['ID']:
+            texto = request.forms.get('texto')
+            bd.Ejecuta("update %s set texto='%s' where id=%s"%(tabla, texto, id))
+
+    bd.cierra()
+    return None
+
+# def GrabaPosibleA(email, clave, idpregunta, texto):
+#     bd = DB(nombrebd="aprende")
+#     usuario = login(email, clave, bd)
+#     if usuario:
+#         if duenoPregunta(idpregunta, bd) == usuario['ID']:
+#             bd.Ejecuta("insert into posibles (idpregunta, texto) values(%s, '%s')"%(idpregunta, texto))
+
+#     bd.cierra()
+#     return None
+
+def EliminaPosibleA(email, clave, idposible):
+    bd = DB(nombrebd="aprende")
+    resp = None
+    usuario = login(email, clave, bd)
+    if usuario:
+        idtexto, idpregunta = idtexto_idpregunta(idposible, bd)
+        if idtexto:
+            if duenoPregunta(idpregunta, bd) == usuario['ID']:
+                bd.Ejecuta("delete from posibles where id=%s"%idposible)
+                resp = leePreguntas(idtexto, bd)
     
     bd.cierra()
     return resp
