@@ -5,7 +5,6 @@
 function inicioLee()
 {
 	encabezado = localStorage.getItem("encabezado");
-	modo = "E";
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
@@ -18,21 +17,20 @@ function refrescar()
 	$("#texto").val("");
 	$("#preguntas").html("");
 	$("#opciones").html("");
-/*	$("#respuesta").val("");	
-	$("#pregunta").focus();*/
 }
 
 function dibujaTextos(datos)
 {
 	$('#usuario').html("&nbsp;" + datos.usuario.nombre + "&nbsp;&nbsp;&nbsp;");
+	modo = datos.usuario.modo;
 	llenaSelector(datos.textos, "textos");
 	llenaSelector(datos.niveles, "niveles");
 }
 
 function selTexto()
 {
-	idtexto = $('#textos').val();
-	LeeTextoA(idtexto, dibujaTexto);	
+	gidtexto = $('#textos').val();
+	LeeTextoA(gidtexto, dibujaTexto);	
 }
 
 function dibujaTexto(datos)
@@ -54,15 +52,32 @@ function dibujaTexto(datos)
 
 function grabaTexto()
 {
-	GrabaTextoA(idtexto, $('#texto').val());
+	GrabaTextoA(gidtexto, $('#texto').val());
 }
 
 function creaTexto(datos)
 {
-	idtexto = datos.id;
+	gidtexto = datos.id;
 	llenaSelector(datos.textos, "textos");
-	poneSelectorxID(idtexto, "textos");
-	LeeTextoA(idtexto, dibujaTexto);	
+	poneSelectorxID(gidtexto, "textos");
+	LeeTextoA(gidtexto, dibujaTexto);	
+}
+
+function modificaNivel()
+{
+	ModificaNivelA(gidtexto, $("#niveles").val());
+}
+
+function modificaTitulo()
+{
+	ModificaTituloA(gidtexto, $("#titulo").val(), dibTitulos);
+}
+
+function dibTitulos(titulos)
+{
+	var id = $("#textos").val();
+	llenaSelector(titulos, "textos");
+	poneSelectorxID(id, "textos");
 }
 
 // preguntas --------------------------------------
@@ -76,6 +91,9 @@ function dibPreguntas(preguntas)
 function armaPreguntas(preguntas, idsel, tag)
 {
 	var cad = "", pregunta;
+	$("#preguntas").html("");
+	$("#opciones").html("");
+
 	$.each(preguntas, function(i,item) {
 		cad = cad + armaPregunta(item.id, item.texto);
 		 if (item.id==idsel)
@@ -154,6 +172,7 @@ function grabaRespuesta(id)
 
 function armaPosibles(lista, idsel, tag)
 {
+	$("#opciones").html("");
 	if (typeof lista != 'undefined') {
 		var cad = "";
 		$.each(lista, function(i,item) {

@@ -1,19 +1,7 @@
 /*
  * @author botpi
  */
-    
-/*function Login(funcion)
-{
-	$.ajax({
-		url: "http://" + servidor + "/function/Login(" + encabezado + ")?pagina=" + pagina,
-		jsonp: "callback",
-		dataType: "jsonp",
-		success: function( response ) {
-			funcion(response);
-		}
-	});	
-}
-*/
+
 function Login(funcionret)
 {
 	sendGet('', 'Login', funcionret); 
@@ -26,7 +14,6 @@ function LeeTextosA(funcionret)
 	sendGet('', 'LeeTextosA', funcionret); 
 }
 
-
 function LeeTextoA(idtexto, funcionret)
 {
 	var p = "," + idtexto;
@@ -38,18 +25,18 @@ function CreaTextoA(funcionret)
 	sendGet('', 'CreaTextoA', funcionret); 
 }
 
-/*function LeeTextoA(idtexto, funcion)
+function ModificaNivelA(idtexto, nivel, funcionret)
 {
-	$.ajax({
-		url: "http://" + servidor + "/function/LeeTextoA(" + encabezado + "," + idtexto + ")?pagina=" + pagina,
-		jsonp: "callback",
-		dataType: "jsonp",
-		success: function( response ) {
-			funcion(response);
-		}
-	});	
+	var p = "," + idtexto + "," + nivel;
+	sendGet(p, 'ModificaNivelA', funcionret); 
 }
-*/
+
+function ModificaTituloA(idtexto, titulo, funcionret)
+{
+	var p = "," + idtexto + ",'" + titulo + "'";
+	sendGet(p, 'ModificaTituloA', funcionret); 
+}
+
 function GrabaTextoA(id, texto)
 {
 	var datos = new FormData();
@@ -73,19 +60,6 @@ function GrabaTextoA(id, texto)
 }
 
 // preguntas ---------------------------------
-
-/*function AgregaPreguntaA(idtexto, funcion)
-{
-	$.ajax({
-		url: "http://" + servidor + "/function/AgregaPreguntaA(" + encabezado + "," + idtexto + ")?pagina=" + pagina,
-		jsonp: "callback",
-		dataType: "jsonp",
-		success: function( response ) {
-			funcion(response);
-		}
-	});	
-}
-*/
 
 function AgregaPreguntaA(idtexto, funcionret)
 {

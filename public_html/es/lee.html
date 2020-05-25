@@ -71,17 +71,21 @@
             </div>
             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;Nivel
-                &nbsp;<select id="niveles"></select>
+                &nbsp;<select id="niveles" onchange="modificaNivel();"></select>
+            </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                <input id="titulo" type="text" >
+            </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                <button onclick="modificaTitulo();">Cambiar Título</button>
             </div>
             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;
                 <button onclick="CreaTextoA(creaTexto);">Crear Nuevo Texto</button>
             </div>
-<!--             <div style="display: table-cell;">
-                <input type="text" id="titulo" value="titulo"/>
-            </div> -->
-        </div>
-        
+        </div>        
     </div>
 </div>
 

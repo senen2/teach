@@ -73,6 +73,27 @@ def CreaTextoA(email, clave):
     bd.cierra()
     return resp
 
+def ModificaNivelA(email, clave, idtexto, nivel):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        if duenoTexto(idtexto, bd) == usuario['ID']:
+            bd.Ejecuta("update textos set idnivel=%s where id=%s" % (nivel, idtexto))
+
+    bd.cierra()
+    return None
+
+def ModificaTituloA(email, clave, idtexto, titulo):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    resp = None
+    if usuario:
+        if duenoTexto(idtexto, bd) == usuario['ID']:
+            bd.Ejecuta("update textos set titulo='%s' where id=%s" % (titulo, idtexto))
+            resp = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+    bd.cierra()
+    return resp
+
 # preguntas--------------------------
 
 def AgregaPreguntaA(email, clave, idtexto):
