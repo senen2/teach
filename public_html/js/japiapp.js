@@ -2,7 +2,7 @@
  * @author botpi
  */
     
-function Login(funcion)
+/*function Login(funcion)
 {
 	$.ajax({
 		url: "http://" + servidor + "/function/Login(" + encabezado + ")?pagina=" + pagina,
@@ -13,10 +13,32 @@ function Login(funcion)
 		}
 	});	
 }
+*/
+function Login(funcionret)
+{
+	sendGet('', 'Login', funcionret); 
+}
 
 // texto --------------------------------------
 
-function LeeTextoA(idtexto, funcion)
+function LeeTextosA(funcionret)
+{
+	sendGet('', 'LeeTextosA', funcionret); 
+}
+
+
+function LeeTextoA(idtexto, funcionret)
+{
+	var p = "," + idtexto;
+	sendGet(p, 'LeeTextoA', funcionret); 
+}
+
+function CreaTextoA(funcionret)
+{
+	sendGet('', 'CreaTextoA', funcionret); 
+}
+
+/*function LeeTextoA(idtexto, funcion)
 {
 	$.ajax({
 		url: "http://" + servidor + "/function/LeeTextoA(" + encabezado + "," + idtexto + ")?pagina=" + pagina,
@@ -27,12 +49,12 @@ function LeeTextoA(idtexto, funcion)
 		}
 	});	
 }
-
-function GrabaTextoA(texto)
+*/
+function GrabaTextoA(id, texto)
 {
 	var datos = new FormData();
 	var btexto = new Blob([texto], { type: "text/xml"});
-	datos.append('idtexto', gtexto.textos[0].id);
+	datos.append('idtexto', id);
 	datos.append('texto', btexto);
 	var enc = encabezado.split("'").join('').split(',');
 	datos.append('email', enc[0]);

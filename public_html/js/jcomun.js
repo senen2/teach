@@ -95,7 +95,7 @@ function extraeNombre(lista, campo)
 */
 function llenaSelector(datos, control)
 {
-	var cad = "";
+	var cad = '<option value="0">Seleccione</option>';
 	$.each(datos, function(i,item) {
 		cad = cad + '<option value="' + item.ID +'">' + item.nombre + '</option>';
 	});

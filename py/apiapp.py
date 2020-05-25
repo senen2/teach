@@ -20,13 +20,26 @@ def Login(email, clave):
 
 # texto ----------------------------------
 
-def LeeTextoA(email, clave, idtexto):
+def LeeTextosA(email, clave):
     bd = DB(nombrebd="aprende")
     usuario = login(email, clave, bd)
     if usuario:
         response = {}
         response['usuario'] = usuario
-        response["textos"] = bd.Ejecuta("select * from textos where id=%s" % (idtexto))
+        response["niveles"] = bd.Ejecuta("select *, id as ID from niveles")
+        response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+        bd.cierra()
+        return response
+    bd.cierra()
+    return None
+
+def LeeTextoA(email, clave, idtexto):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    if usuario:
+        response = {}
+        # response['usuario'] = usuario
+        response["texto"] = bd.Ejecuta("select * from textos where id=%s" % (idtexto))[0]
         response['preguntas'] = leePreguntas(idtexto, bd)
         bd.cierra()
         return response
@@ -47,6 +60,18 @@ def GrabaTextoA(request):
 
     bd.cierra()
     return None
+
+def CreaTextoA(email, clave):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    resp = {}
+    if usuario:
+        bd.Ejecuta("insert into textos (idusuario, texto) values (%s, '')"%usuario['ID'])
+        resp['id'] = bd.UltimoID()
+        resp["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+
+    bd.cierra()
+    return resp
 
 # preguntas--------------------------
 

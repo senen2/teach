@@ -5,22 +5,34 @@
 function inicioLee()
 {
 	encabezado = localStorage.getItem("encabezado");
-	idtexto = 1;
 	modo = "E";
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
 	refrescar();
+	LeeTextosA(dibujaTextos);
 }
 
 function refrescar()
 {
 	$("#texto").val("");
-	$("#pregunta").val("");
-	$("#opciones").val("");
-	$("#respuesta").val("");	
-	$("#pregunta").focus();
-	LeeTextoA(idtexto, dibujaTexto);
+	$("#preguntas").html("");
+	$("#opciones").html("");
+/*	$("#respuesta").val("");	
+	$("#pregunta").focus();*/
+}
+
+function dibujaTextos(datos)
+{
+	$('#usuario').html("&nbsp;" + datos.usuario.nombre + "&nbsp;&nbsp;&nbsp;");
+	llenaSelector(datos.textos, "textos");
+	llenaSelector(datos.niveles, "niveles");
+}
+
+function selTexto()
+{
+	idtexto = $('#textos').val();
+	LeeTextoA(idtexto, dibujaTexto);	
 }
 
 function dibujaTexto(datos)
@@ -29,17 +41,28 @@ function dibujaTexto(datos)
 		document.cookie = "pagpend=" + document.URL;			
 		window.location.assign("index.html");		
 	}
+	refrescar();
 	gtexto = datos;
-	$('#usuario').html("Bienvenido(a) " + gtexto.usuario.nombre);
+	$('#titulo').val(gtexto.texto.titulo);
+	poneSelectorxID(datos.texto.idnivel, "niveles");
 	var userLang = navigator.language || navigator.userLanguage; 
 
-	$("#texto").val(gtexto.textos[0].texto);
-	armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
+	$("#texto").val(gtexto.texto.texto);
+	if (gtexto.preguntas.length)
+		armaPreguntas(gtexto.preguntas, gtexto.preguntas[0].id, "#preguntas")
 }
 
 function grabaTexto()
 {
-	GrabaTextoA($('#texto').val())
+	GrabaTextoA(idtexto, $('#texto').val());
+}
+
+function creaTexto(datos)
+{
+	idtexto = datos.id;
+	llenaSelector(datos.textos, "textos");
+	poneSelectorxID(idtexto, "textos");
+	LeeTextoA(idtexto, dibujaTexto);	
 }
 
 // preguntas --------------------------------------

@@ -59,13 +59,27 @@
 <div class="section">
     <div class="container">
         <div class="fila">
-            <div class="col2 menu-img">
+            <div class="col2 menu-img" style="display: table-cell;">
                 <span onclick="menuPop(1);"></span>
             </div>
-            <div class="col2">&nbsp;&nbsp;&nbsp;</div>
-            <div class="col2 welcome">
-                <label id="usuario">Bienvenido(a)</label>
+            <div class="col2 welcome" style="display: table-cell;">
+                <label id="usuario"></label>
             </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                Textos&nbsp;<select id="textos" onchange="selTexto();"></select>
+            </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;Nivel
+                &nbsp;<select id="niveles"></select>
+            </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                <button onclick="CreaTextoA(creaTexto);">Crear Nuevo Texto</button>
+            </div>
+<!--             <div style="display: table-cell;">
+                <input type="text" id="titulo" value="titulo"/>
+            </div> -->
         </div>
         
     </div>
@@ -102,7 +116,7 @@
             <button style="width: 100%;" onclick="grabaTexto();"><h3>Grabar</h3></button>
         </td>
         <td>
-            <button style="width: 100%;" onclick="AgregaPreguntaA(gtexto.textos[0].id, agregaPregunta);"><h3>Agregar</h3></button>
+            <button style="width: 100%;" onclick="AgregaPreguntaA(gtexto.texto.id, agregaPregunta);"><h3>Agregar</h3></button>
         </td>
         <td>
             <button style="width: 100%;" onclick="AgregaPosibleA(idpreguntaSel, agregaPosible);"><h3>Agregar</h3></button>
@@ -114,9 +128,6 @@
 
 <div id="menu" class="config-menu">
     <h2>Menu</h2>
-    <a class="btn-a v2" href="entradas.html"><div><span>Compras Lector</span></div></a>
-    <a class="btn-a v2" href="entradast.html"><div><span>Compras Teclado</span></div></a>
-    <a class="btn-a v2" href="creaprod.html"><div><span>Creación y Modificacion</span></div></a>
     <a class="btn-a v2" href="#" onclick="logout();"><div><span>Salir</span></div></a>
 </div>
 
