@@ -55,6 +55,9 @@ def GetUrl(url):
     resp = dict()
     resp["html"] = urllib2.urlopen("http://" + url).read()
     return json.dumps(resp, default=convert, ensure_ascii = False)
+
+def ajusta(a):
+    return json.dumps(a, default=convert, ensure_ascii = False)
         
 def convert(obj):
     """Default JSON serializer."""

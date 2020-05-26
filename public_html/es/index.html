@@ -86,11 +86,23 @@
                 <td><input id="clave" placeholder="Contraseña" style="width:218px" type="password" onkeydown="if (event.keyCode == 13) registrar();"></td>
             </tr>
             <tr>
+                <td>
+                    <select id="modo">
+                        <option value="E">Maestro</option>
+                        <option value="A">Estudiante</option>
+                        <option value="L">Lector</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td>
-                    <div class="btn-div" id="registrarButton" onclick="registrar()">Regístrame</div>
+                    <div class="btn-div" id="registrarButton" onclick="creaUsuario()">Regístrame</div>
                 </td>
             </tr>
             <tr class="no-cell">

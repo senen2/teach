@@ -15,16 +15,36 @@ function inicioLee()
 function refrescar()
 {
 	$("#texto").val("");
+	$("#titulo").val("");
 	$("#preguntas").html("");
 	$("#opciones").html("");
 }
 
 function dibujaTextos(datos)
 {
-	$('#usuario').html("&nbsp;" + datos.usuario.nombre + "&nbsp;&nbsp;&nbsp;");
-	modo = datos.usuario.modo;
-	llenaSelector(datos.textos, "textos");
-	llenaSelector(datos.niveles, "niveles");
+	if (datos) {		
+		$('#usuario').html("&nbsp;" + datos.usuario.nombre + "&nbsp;&nbsp;&nbsp;");
+		modo = datos.usuario.modo;
+		llenaSelector(datos.textos, "textos");
+		llenaSelector(datos.niveles, "niveles");
+		if (modo=="E") {
+			$("#botones").show();
+			$("#titulo").show();
+			$("#cambiaTitulo").show();
+			$("#creaTexto").show();
+			$('#niveles').removeAttr('disabled');
+		}
+		else {
+			$("#botones").hide();	
+			$("#titulo").hide();
+			$("#cambiaTitulo").hide();
+			$("#creaTexto").hide();
+			$("#niveles").prop('disabled', 'disabled');
+		}
+	}
+	else
+		logout();
+
 }
 
 function selTexto()
@@ -107,17 +127,25 @@ function armaPreguntas(preguntas, idsel, tag)
 
 function armaPregunta(id, texto)
 {
+	var m1 = '', m2 = '';
+
+	if (modo=='E') {
+		m1 = ' onchange="modificaPregunta(this, ' + id + ');"';
+		m2 = '<img id="imgEli-' + id + '" class="elimina DN" src="../images/delete.png"' + 
+		 		' width="16px" onclick="eliPregunta(' + id + ');" />';
+	}
+
 	return '<div id="divPregunta-' + id + '" style="position: relative;">' +
 			' <textarea class="pregunta" id="pregunta-' + id + '"' + 
 				' draggable="true"' +
 				' onmouseover="selPregunta(' + id + ');"' + 
 				' onmouseout="deselPregunta(' + id + ');"' + 
-				' onchange="modificaPregunta(this, ' + id + ');"' + 
+				m1 +
 				' ondrag="drag(event);"' + 
 				'>' +
 		 		texto + '</textarea>' +
-		 		'<img id="imgEli-' + id + '" class="elimina DN" src="../images/delete.png"' + 
-		 		' width="16px" onclick="eliPregunta(' + id + ');" /></div>';
+		 		m2 +
+		 		'</div>';
 } 
 
 function selPregunta(idpregunta)

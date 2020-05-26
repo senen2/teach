@@ -7,7 +7,7 @@ Created on 10/07/2013
 from bottle import route, run, template, response, hook
 from bottle import get, post, request, ServerAdapter, BaseRequest
 
-from apiweb import GetServer, PostServer, NodoRuta, GetUrl
+from apiweb import GetServer, PostServer, NodoRuta, GetUrl, ajusta
 import os
 from apiDB import DB
 from apiapp import *
@@ -61,6 +61,8 @@ def responde(funcion, resp):
     else:
         pagina = ""
     # NodoRuta(funcion, request, pagina)
+
+    # resp = ajusta(resp)
 
     if request.POST.get('callback'):
         return request.POST.get('callback') + "(" + resp + ")"

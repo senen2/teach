@@ -13,7 +13,6 @@ function login()
 function verUsuario(datos)
 {
 	if (datos) {
-		// document.cookie = "encabezado=" + encabezado;
 		localStorage.setItem("encabezado", encabezado);
 		localStorage.setItem("email", $("#emaillogin").val());
 		window.location.assign("lee.html");
@@ -28,7 +27,7 @@ function inicioIndex() {
 	}
 }
 
-function registrar()
+function creaUsuario()
 {
 	if ($("#nombre").val()=="" | $("#email").val()=="" | $("#clave").val()=="") {
 		alert("los campos no pueden estar en blanco");
@@ -39,13 +38,13 @@ function registrar()
 		return;
 	}
 	encabezado = "'" + $("#email").val() + "','" + $("#clave").val() + "'";
-	AgregaClienteF($("#nombre").val(), verCreacion);
+	CreaUsuarioA($("#nombre").val(), $("#modo").val(), 'es', verCreacion);
 }
 
 function verCreacion(datos)
 {
-	if (datos=='"ok"')
-		LoginF(verUsuario);
+	if (datos=="ok")
+		Login(verUsuario);
 	else	
 		alert("ya existe una cuenta con este email");
 }

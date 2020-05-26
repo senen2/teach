@@ -2,10 +2,8 @@
 '''
 Created on 02/01/2015
 
-@author: Carlos Botello
+@author: Botpi
 '''
-# import json
-# import datetime, decimal
 
 def login(email, clave, bd):
     rows = bd.Ejecuta("select * from usuarios where email='%s' and clave='%s'" % (email, clave))

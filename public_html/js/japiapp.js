@@ -7,6 +7,30 @@ function Login(funcionret)
 	sendGet('', 'Login', funcionret); 
 }
 
+
+function CreaUsuarioA(nombre, modo, lang, funcionret)
+{
+	var p = ",'" + nombre + "','" + modo + "','" + lang + "'";
+	sendGet(p, 'CreaUsuarioA', funcionret); 
+}
+
+/*function CreaUsuarioA(nombre, modo, funcionret)
+{
+	var userLang = navigator.language || navigator.userLanguage; 
+       if (userLang.indexOf("es") >= 0) {
+       	lang = "es";
+       }
+       else {
+       	lang = "en";
+       }
+
+	var datos = new FormData();
+	datos.append('nombre', nombre);
+	datos.append('modo', modo);
+	datos.append('lang', lang);
+	sendPost(datos, "CreaUsuarioA", funcionret);
+}
+*/
 // texto --------------------------------------
 
 function LeeTextosA(funcionret)
@@ -134,7 +158,7 @@ function sendPost(datos, funcionh, funcionret)
 
 	xhr.onreadystatechange = function() {
 	    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-	        funcionret();
+	        funcionret(); // this.response or this.responseText
 	    }
 	}
 	xhr.send(datos);	

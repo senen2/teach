@@ -18,6 +18,33 @@ def Login(email, clave):
     bd.cierra()
     return None
 
+def CreaUsuarioA(email, clave, nombre, modo, lang):
+    bd = DB(nombrebd="aprende")
+    rows = bd.Ejecuta("select * from usuarios where email='%s'"%email)
+    resp = "x"
+    if not rows:
+        bd.Ejecuta("insert into usuarios (nombre, email, clave, modo, lang) values ('%s','%s','%s','%s','%s')"%(nombre, email, clave, modo, lang))
+        resp = "ok"
+
+    bd.cierra()
+    return resp
+
+# def CreaUsuarioA(request):
+#     bd = DB(nombrebd="aprende")
+#     email = request.forms.get('email')
+#     rows = bd.Ejecuta("select * from usuarios where email='%s'"%email)
+#     resp = "x"
+#     if not rows:
+#         clave = request.forms.get('clave')
+#         nombre = request.forms.get('nombre')
+#         modo = request.forms.get('modo')
+#         lang = request.forms.get('lang')
+#         bd.Ejecuta("insert into usuarios (nombre, email, clave, modo, lang) values ('%s','%s','%s','%s','%s')"%(nombre, email, clave, modo, lang))
+#         resp = "ok"
+
+#     bd.cierra()
+#     return resp
+
 # texto ----------------------------------
 
 def LeeTextosA(email, clave):
@@ -27,7 +54,10 @@ def LeeTextosA(email, clave):
         response = {}
         response['usuario'] = usuario
         response["niveles"] = bd.Ejecuta("select *, id as ID from niveles")
-        response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+        if usuario['modo']=='E':
+            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s order by nombre"%usuario['ID'] )
+        else:
+            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos order by nombre" )
         bd.cierra()
         return response
     bd.cierra()
