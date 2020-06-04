@@ -14,23 +14,6 @@ function CreaUsuarioA(nombre, modo, lang, funcionret)
 	sendGet(p, 'CreaUsuarioA', funcionret); 
 }
 
-/*function CreaUsuarioA(nombre, modo, funcionret)
-{
-	var userLang = navigator.language || navigator.userLanguage; 
-       if (userLang.indexOf("es") >= 0) {
-       	lang = "es";
-       }
-       else {
-       	lang = "en";
-       }
-
-	var datos = new FormData();
-	datos.append('nombre', nombre);
-	datos.append('modo', modo);
-	datos.append('lang', lang);
-	sendPost(datos, "CreaUsuarioA", funcionret);
-}
-*/
 // texto --------------------------------------
 
 function LeeTextosA(funcionret)
@@ -174,4 +157,12 @@ function sendGet(params, funcion, funcionret)
 			funcionret(response);
 		}
 	});	
+}
+
+// horario --------------------------------------
+
+function LeeHorarioA(idusuarios, funcionret)
+{
+	var p = "," + idusuarios;
+	sendGet(p, 'LeeHorarioA', funcionret); 
 }

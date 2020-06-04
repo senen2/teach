@@ -55,9 +55,9 @@ def LeeTextosA(email, clave):
         response['usuario'] = usuario
         response["niveles"] = bd.Ejecuta("select *, id as ID from niveles")
         if usuario['modo']=='E':
-            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s order by nombre"%usuario['ID'] )
+            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas where idusuario=%s order by nombre"%usuario['ID'] )
         else:
-            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos order by nombre" )
+            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas order by nombre" )
         bd.cierra()
         return response
     bd.cierra()
@@ -69,7 +69,7 @@ def LeeTextoA(email, clave, idtexto):
     if usuario:
         response = {}
         # response['usuario'] = usuario
-        response["texto"] = bd.Ejecuta("select * from textos where id=%s" % (idtexto))[0]
+        response["texto"] = bd.Ejecuta("select * from paginas where id=%s" % (idtexto))[0]
         response['preguntas'] = leePreguntas(idtexto, bd)
         bd.cierra()
         return response
@@ -83,10 +83,10 @@ def GrabaTextoA(request):
     usuario = login(email, clave, bd)
     if usuario:
         idtexto = request.forms.get('idtexto')
-        if duenoTexto(idtexto, bd) == usuario['ID']:
+        if duenoPagina(idtexto, bd) == usuario['ID']:
             upload = request.files.get('texto')
             texto = upload.file.read().decode()
-            bd.Ejecuta("update textos set texto='%s' where id=%s" % (texto, idtexto))
+            bd.Ejecuta("update paginas set texto='%s' where id=%s" % (texto, idtexto))
 
     bd.cierra()
     return None
@@ -96,9 +96,9 @@ def CreaTextoA(email, clave):
     usuario = login(email, clave, bd)
     resp = {}
     if usuario:
-        bd.Ejecuta("insert into textos (idusuario, texto) values (%s, '')"%usuario['ID'])
+        bd.Ejecuta("insert into paginas (idusuario, texto) values (%s, '')"%usuario['ID'])
         resp['id'] = bd.UltimoID()
-        resp["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+        resp["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas where idusuario=%s"%usuario['ID'] )
 
     bd.cierra()
     return resp
@@ -107,8 +107,8 @@ def ModificaNivelA(email, clave, idtexto, nivel):
     bd = DB(nombrebd="aprende")
     usuario = login(email, clave, bd)
     if usuario:
-        if duenoTexto(idtexto, bd) == usuario['ID']:
-            bd.Ejecuta("update textos set idnivel=%s where id=%s" % (nivel, idtexto))
+        if duenoPagina(idtexto, bd) == usuario['ID']:
+            bd.Ejecuta("update paginas set idnivel=%s where id=%s" % (nivel, idtexto))
 
     bd.cierra()
     return None
@@ -118,9 +118,9 @@ def ModificaTituloA(email, clave, idtexto, titulo):
     usuario = login(email, clave, bd)
     resp = None
     if usuario:
-        if duenoTexto(idtexto, bd) == usuario['ID']:
-            bd.Ejecuta("update textos set titulo='%s' where id=%s" % (titulo, idtexto))
-            resp = bd.Ejecuta("select *, id as ID, titulo as nombre from textos where idusuario=%s"%usuario['ID'] )
+        if duenoPagina(idtexto, bd) == usuario['ID']:
+            bd.Ejecuta("update paginas set titulo='%s' where id=%s" % (titulo, idtexto))
+            resp = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas where idusuario=%s"%usuario['ID'] )
     bd.cierra()
     return resp
 
@@ -131,7 +131,7 @@ def AgregaPreguntaA(email, clave, idtexto):
     usuario = login(email, clave, bd)
     resp = {}
     if usuario:
-        if duenoTexto(idtexto, bd) == usuario['ID']:
+        if duenoPagina(idtexto, bd) == usuario['ID']:
             rows = bd.Ejecuta("select orden from preguntas where idtexto=%s order by orden desc limit 1"%idtexto)
             
             orden = 1
@@ -268,5 +268,18 @@ def EliminaPosibleA(email, clave, idposible):
                 bd.Ejecuta("delete from posibles where id=%s"%idposible)
                 resp = leePreguntas(idtexto, bd)
     
+    bd.cierra()
+    return resp
+
+# horario -----------------------------------------------
+
+def LeeHorarioA(email, clave, idusuario):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    resp = {}
+    if usuario:
+        resp['horario'] = bd.Ejecuta("select *, cast(hora as char) as horac from horarios where idusuario=%s and activo=1 order by dia, hora"%usuario['ID'])
+        resp['horas'] = bd.Ejecuta("select cast(hora as char) as hora from horarios where idusuario=%s and activo=1 group by hora"%usuario['ID'])
+        resp['dias'] = bd.Ejecuta("select distinct dia from horarios where idusuario=%s and activo=1 order by dia"%usuario['ID'])
     bd.cierra()
     return resp

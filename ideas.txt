@@ -1,32 +1,30 @@
-Como un blog
 
-	Una persona escribe un texto y elabora los puntos básicos o elementos que quiera resaltar o sobre los que quiera preguntar
+Todo usuario tiene un horario
+El colegio tiene varios horarios
 
-	Otras personas lo leen y responden o comentan
+El horario
+	Dia de la semana
+	Hora del dia
+	Clase
+	Maestro
 
-	Los lectores deben estar autorizados por el escritor para leer
+	Para el alumno
+		idhorario
 
-	Tanto lectores como escritores deben tener una cuenta
+El maestro
+	Puede tener varias clases a la misma hora
+	Llena su horario con materias
+	Asigna materias al horario
+	Autoriza los alumnos de cada clase
+	Atiende a los alumnos que están en clase
+	Crea los cuadernos, opcionalmente
 
-	Los escritores llevan un registro de lo que escriben
-	Los lectores llevan un registro de lo que leen, contestan y comentan
+El alumno
+	Entra al horario y selecciona la clase
+		El maestro es notificado de esta entrada a clase
+		El maestro puede accesar la clase para poder interactuar
+	Realiza las actividades de la clase
 
-	Los escritos se pueden clasificar por niveles para los estudiantes
-
-Como una clase
-
-	Hay un profesor que crea la clase y hay alumnos que la reciben
-	Los profesores tienen cuenta
-	Los alumnos no la necesitan a menos que quieran guardar un registro de sus clasees, el cuaderno
-
-	La clase
-		Tiene un pizarrón donde el maestro le muestra al alumno
-			Puede estar creado de antemano o puede crearse en el momento de dar el curso
-			Tal vez las dos formas están creadas de antemano, pero la segunda se escribe lentamente
-			Pueden haber imágenes
-
-		El profesor habla sincronizado con lo que escribe. O sea habla a medida que escribe o muestra una imagen o video
-
-		Hay unos puntos a resaltar y para reforzarlos hace preguntas que tienen varias opciones con una como la correcta
-			El conjunto de estos puntos forma el resumen
-
+El cuaderno
+	Es un conjunto de páginas
+	Puede ser público o privado

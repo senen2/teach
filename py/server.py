@@ -124,7 +124,7 @@ def stream():
     
 #from gevent import monkey; monkey.patch_all()
 # run(host='myfinan.com', port=8085, debug=True, server="cherrypy")
-run(host='142.93.52.198', port=8086, debug=True)
+run(host='142.93.52.198', port=8081, debug=True)
 
 # esto con class SSLWSGIRefServer para https
 # srv = SSLWSGIRefServer(host="192.168.1.112", port=8084)

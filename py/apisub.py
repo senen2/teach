@@ -16,12 +16,12 @@ def duenoPregunta(idpregunta, bd):
         bd.Ejecuta("""
             select idusuario 
             from preguntas
-                inner join textos on textos.id=preguntas.idtexto 
+                inner join paginas on paginas.id=preguntas.idtexto 
             where preguntas.id=%s"""%idpregunta)
         )
 
-def duenoTexto(idtexto, bd):
-    return valUsuario(bd.Ejecuta("select * from textos where id=%s"%idtexto))
+def duenoPagina(idpagina, bd):
+    return valUsuario(bd.Ejecuta("select * from paginas where id=%s"%idpagina))
 
 def valUsuario(rows):
     if rows:
