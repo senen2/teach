@@ -199,3 +199,53 @@ function today()
 	var strDate = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
 	return strDate;
 }
+
+// cuadros ----------------------------------------
+
+function dibujaCuadro(nrows, ncols, control, width, height, padding_left, padding_top, trows, tcols)
+{
+	var cad=''
+		,h = parseInt((height - control.position().top - padding_top)/nrows)
+		,w = parseInt((width - control.position().left - padding_left)/ncols)
+		,st = 'width:' + w + 'px; max-width:' + w + 'px; height:' + h + 'px; min-height: 50px; padding-top: 5px;';
+
+	var ncontrol = control.selector;
+	if (ncontrol.substr(0,1)=="#")
+		ncontrol = ncontrol.substr(1);
+
+	var row, col;
+	for (col=0; col<ncols; col++) {
+		cad += 
+			'<div style="display: table-cell; width: ' + w + 'px; text-align: center;">' 
+				+ tcols[col] 
+			+ '</div>';
+	}
+
+	for (row=0; row<nrows; row++) {	
+		cad += '<div class="col">&nbsp;' + trows[row];
+
+		for (col=0; col<ncols; col++) {
+			cad += '<div id="' + ncontrol + '-' + row + '-' + col + '"'
+				+ ' class="node col" style="' + st + '"'
+				+ ' onclick="click' + ncontrol + '(' + row + ',' + col + ')"'
+				+ '">' 
+				+ '</div>';
+		}
+		cad += '</div>'
+	}
+	control.html(cad);
+}
+
+function coorCuadro(val, rows, cols, nrow, ncol)
+{
+	var row, col;
+	for (row=0; row<rows.length; row++) {	
+		if (val[nrow] == rows[row][nrow])
+			break;
+	}
+	for (col=0; col<cols.length; col++) {
+		if (val[ncol] == cols[col][ncol])
+			break;
+	}
+	return [row, col];
+}

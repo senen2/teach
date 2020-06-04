@@ -279,7 +279,7 @@ def LeeHorarioA(email, clave, idusuario):
     resp = {}
     if usuario:
         resp['horario'] = bd.Ejecuta("select *, cast(hora as char) as horac from horarios where idusuario=%s and activo=1 order by dia, hora"%usuario['ID'])
-        resp['horas'] = bd.Ejecuta("select cast(hora as char) as hora from horarios where idusuario=%s and activo=1 group by hora"%usuario['ID'])
+        resp['horas'] = bd.Ejecuta("select cast(hora as char) as horac from horarios where idusuario=%s and activo=1 group by hora"%usuario['ID'])
         resp['dias'] = bd.Ejecuta("select distinct dia from horarios where idusuario=%s and activo=1 order by dia"%usuario['ID'])
     bd.cierra()
     return resp

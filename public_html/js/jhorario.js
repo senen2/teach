@@ -20,6 +20,26 @@ function dibujaHorario(datos)
 	if (datos!='*')
 		gdatos = datos;
 
+	var dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+	var horas = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5]
+	dibujaCuadro(10, 7, $("#horario"), $(window).width(), $(document).height(), 100, 40, horas, dias);
+
+	var hora, dia;
+	$.each(gdatos.horario, function(i,item) {
+		/*[hora, dia] = coorCuadro(item, gdatos.horas, gdatos.dias, 'horac', 'dia');*/
+		$("#horario-" + item.horay + '-' + item.dia).html(item.horac + ' / ' + item.duracion + 'min<br>' + item.nombre)
+	});
+
+}
+
+function dibujaHorario1(datos)
+{
+	if (!datos) 
+		window.location.assign("index.html");
+	
+	if (datos!='*')
+		gdatos = datos;
+
 	var cad='', hora='', dia='', horario='', clase='' 
 		ww = $(window).width(),
 		dh = $(document).height(),
