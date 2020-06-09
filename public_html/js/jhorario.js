@@ -7,6 +7,8 @@ function inicio()
 	encabezado = localStorage.getItem("encabezado");
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
+	gdias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+	ghoras = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5]
 	leeServidor();
 	LeeHorarioA(1, dibujaHorario);
 /*	dibujaHorario([1]);*/
@@ -20,78 +22,53 @@ function dibujaHorario(datos)
 	if (datos!='*')
 		gdatos = datos;
 
-	var dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-	var horas = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5]
-	dibujaCuadro(10, 7, $("#horario"), $(window).width(), $(document).height(), 100, 40, horas, dias);
+	dibujaCuadro(10, 7, $("#horario"), $(window).width(), $(document).height(), 100, 40, ghoras, gdias);
 
 	var hora, dia;
 	$.each(gdatos.horario, function(i,item) {
-		/*[hora, dia] = coorCuadro(item, gdatos.horas, gdatos.dias, 'horac', 'dia');*/
-		$("#horario-" + item.horay + '-' + item.dia).html(item.horac + ' / ' + item.duracion + 'min<br>' + item.nombre)
+		/*[hora, dia] = coorCuadro(item, datos.ghoras, gdatos.dias, 'horac', 'dia');*/
+		$("#horario-" + item.hora + '-' + item.dia).html(item.horac + ' / ' + item.duracion + 'min<br>' + item.nombre)
 	});
 
 }
 
-function dibujaHorario1(datos)
+function click_horario(hora, dia)
 {
-	if (!datos) 
-		window.location.assign("index.html");
-	
-	if (datos!='*')
-		gdatos = datos;
+	var cad= gdias[dia] + ' a las ' + ghoras[hora];
 
-	var cad='', hora='', dia='', horario='', clase='' 
-		ww = $(window).width(),
-		dh = $(document).height(),
-		t = $("#horario").position().top,
-		l = $("#horario").position().left,
-		h = parseInt((dh-t-40)/10),
-		w = parseInt((ww-l-100)/7),
-		st = 'width:' + w + 'px; max-width:' + w + 'px; height:' + h + 'px; min-height: 50px; padding-top: 5px;',
-		dias = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+	$("#editor").html(
+		'<div class="sector v2" style=" z-index:9010;position: fixed;top:25%;left:40%;">'
+			+ '<label class="item-name" align="center">' + cad + '</label><br><br>'
+			+ '<div style="min-height:200px; font-size:12px" align="left">'
+			+ '</div>'
+		    + '<div class="col"><a id="titcerrar" class="btn v4" onclick="guardar();">Guardar</a></div>'
+			+ '<div class="col">&nbsp;&nbsp;&nbsp;&nbsp;</div>'
+		    + '<div class="col"><a id="titcerrar" class="btn v4" onclick="cerrar();">Cancelar</a></div>'
+		+ '<br></div>');
 
-	for (d=0; d<7; d++) {
-		cad += '<div style="display: table-cell; width: ' + w + 'px; text-align: center;">' + dias[d] + '</div>';
-	}
-
-	for (h=0; h<10; h++) {	
-		for (d=0; d<7; d++) {
-	
-			hora = '', dia = '', clase='';
-			if (gdatos.horas[h] && gdatos.dias[d]) {
-				horario = buscaHora(gdatos.horario, d, gdatos.horas[h].hora);
-				hora = d + '-xxx-' + h;
-				if (horario) {
-					hora = horario.horac;
-					dia = horario.dia;	
-					clase = horario.nombre;				
-				}
-/*				hora = gdatos.horas[h].hora;
-				dia = dias[gdatos.dias[d].dia];*/
-			}
-
-			cad += '<div class="node col" onclick="verHora(' + d + ',' + h + ')"'
-				+ ' style="' + st + '"'
-				+ '">' 
-				+ hora + '<br>' + clase
-				+ '</div>';
-		}
-	}
-	$("#horario").html(cad);
+	tapar();		
 }
 
-function buscaHora(lista, dia, hora)
+function tapar()
 {
-	resp = null;
-	$.each(lista, function(i,item) {
-		 if (item.dia==dia && item.horac==hora)
-		 	return resp = item;
-	});
-	return resp;
-
+	$("#editor").show();
+	$("#mask2").removeClass("DN");
+	$('#mask2').css({'width':$(window).width(),'height':$(document).height()});	
 }
 
-function verHora(dia, hora)
+function destapar()
 {
+	$("#editor").hide();
+	$("#mask2").addClass("DN");
+	$('#mask2').css({'width':0,'height':0});	
+}
 
+function cerrar()
+{
+	destapar();
+}
+
+function guardar()
+{
+	destapar();
 }

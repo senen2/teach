@@ -2,14 +2,14 @@
  * @author botpi
  */
 
-function inicioLee()
+function inicio()
 {
 	encabezado = localStorage.getItem("encabezado");
 	if (encabezado==null || encabezado=="")
 		encabezado="'',''";
 	leeServidor();
 	refrescar();
-	LeeTextosA(dibujaTextos);
+	LeeCuadernosA(dibujaTextos);
 }
 
 function refrescar()
@@ -25,35 +25,46 @@ function dibujaTextos(datos)
 	if (datos) {		
 		$('#usuario').html("&nbsp;" + datos.usuario.nombre + "&nbsp;&nbsp;&nbsp;");
 		modo = datos.usuario.modo;
-		llenaSelector(datos.textos, "textos");
-		llenaSelector(datos.niveles, "niveles");
-		if (modo=="E") {
+		llenaSelector(datos.cuadernos, "cuadernos");
+/*		llenaSelector(datos.niveles, "niveles");
+*/		if (modo=="E") {
 			$("#botones").show();
 			$("#titulo").show();
 			$("#cambiaTitulo").show();
 			$("#creaTexto").show();
-			$('#niveles').removeAttr('disabled');
-		}
+/*			$('#niveles').removeAttr('disabled');
+*/		}
 		else {
 			$("#botones").hide();	
 			$("#titulo").hide();
 			$("#cambiaTitulo").hide();
 			$("#creaTexto").hide();
-			$("#niveles").prop('disabled', 'disabled');
-		}
+/*			$("#niveles").prop('disabled', 'disabled');
+*/		}
 	}
 	else
 		logout();
 
 }
 
-function selTexto()
+function selCuaderno()
 {
-	gidtexto = $('#textos').val();
-	LeeTextoA(gidtexto, dibujaTexto);	
+	gidcuaderno = $('#cuadernos').val();
+	LeePaginasA(gidcuaderno, llenaPaginas);	
 }
 
-function dibujaTexto(datos)
+function llenaPaginas(datos)
+{
+	llenaSelector(datos.paginas, "paginas");
+}
+
+function selPagina()
+{
+	gidpagina = $('#paginas').val();
+	LeePaginaA(gidpagina, dibujaPagina);	
+}
+
+function dibujaPagina(datos)
 {
 	if (!datos) {
 		document.cookie = "pagpend=" + document.URL;			
@@ -62,7 +73,7 @@ function dibujaTexto(datos)
 	refrescar();
 	gtexto = datos;
 	$('#titulo').val(gtexto.texto.titulo);
-	poneSelectorxID(datos.texto.idnivel, "niveles");
+/*	poneSelectorxID(datos.texto.idnivel, "niveles");*/
 	var userLang = navigator.language || navigator.userLanguage; 
 
 	$("#texto").val(gtexto.texto.texto);
@@ -72,22 +83,22 @@ function dibujaTexto(datos)
 
 function grabaTexto()
 {
-	GrabaTextoA(gidtexto, $('#texto').val());
+	GrabaTextoA(gidpagina, $('#texto').val());
 }
 
 function creaTexto(datos)
 {
-	gidtexto = datos.id;
+	gidpagina = datos.id;
 	llenaSelector(datos.textos, "textos");
-	poneSelectorxID(gidtexto, "textos");
-	LeeTextoA(gidtexto, dibujaTexto);	
+	poneSelectorxID(gidpagina, "textos");
+	LeeTextoA(gidpagina, dibujaPagina);	
 }
-
-function modificaNivel()
+/*
+function |()
 {
 	ModificaNivelA(gidtexto, $("#niveles").val());
 }
-
+*/
 function modificaTitulo()
 {
 	ModificaTituloA(gidtexto, $("#titulo").val(), dibTitulos);

@@ -48,7 +48,7 @@
 			titulo = "Aprende";
 			ayuda = "http://gtienda.com/wiki/mediawiki-1.23.5/index.php?title=GTienda:Acerca_de";
 			leeServidor();
-            inicioLee();
+            inicio();
 		});
 	</script>
 </head>
@@ -67,12 +67,16 @@
             </div>
             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;
-                Textos&nbsp;<select id="textos" onchange="selTexto();"></select>
+                Cuadernos&nbsp;<select id="cuadernos" onchange="selCuaderno();"></select>
             </div>
             <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                Paginas&nbsp;<select id="paginas" onchange="selPagina();"></select>
+            </div>
+<!--             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;Nivel
                 &nbsp;<select id="niveles" onchange="modificaNivel();"></select>
-            </div>
+            </div> -->
             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;
                 <input id="titulo" type="text" >
@@ -83,7 +87,11 @@
             </div>
             <div style="display: table-cell;">
                 &nbsp;&nbsp;&nbsp;
-                <button id="creaTexto" onclick="CreaTextoA(creaTexto);">Crear Nuevo Texto</button>
+                <button id="creaTexto" onclick="CreaCuadernoA(creaCuaderno);">Crear Nuevo Cuaderno</button>
+            </div>
+            <div style="display: table-cell;">
+                &nbsp;&nbsp;&nbsp;
+                <button id="creaTexto" onclick="CreaTextoA(creaTexto);">Crear Nueva Página</button>
             </div>
         </div>        
     </div>

@@ -16,15 +16,21 @@ function CreaUsuarioA(nombre, modo, lang, funcionret)
 
 // texto --------------------------------------
 
-function LeeTextosA(funcionret)
+function LeeCuadernosA(funcionret)
 {
-	sendGet('', 'LeeTextosA', funcionret); 
+	sendGet('', 'LeeCuadernosA', funcionret); 
 }
 
-function LeeTextoA(idtexto, funcionret)
+function LeePaginasA(idcuaderno, funcionret)
+{
+	var p = "," + idcuaderno;
+	sendGet(p, 'LeePaginasA', funcionret); 
+}
+
+function LeePaginaA(idtexto, funcionret)
 {
 	var p = "," + idtexto;
-	sendGet(p, 'LeeTextoA', funcionret); 
+	sendGet(p, 'LeePaginaA', funcionret); 
 }
 
 function CreaTextoA(funcionret)

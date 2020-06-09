@@ -1,0 +1,8 @@
+Ante el horario
+	Estudiante
+		Elige su clase
+
+	Maestro
+		Agrega clases
+		Establece horas
+		Matricula alumnos

@@ -1,0 +1,15 @@
+
+Sitio de desarrollo
+	cambiar
+		base de datos
+		puerto
+
+		Hay que reconstruirlos antes de pasar al original
+			o tenerlos en un archivo especial
+			tal vez cuando index lea el url
+				el puerto se define en la variable servidor
+				la base de datos en la variable encabezado ???
+					podrian manipularla
+					de todos modos hay que buscar una mejor autenticación
+			Tal vez mantener un archivo fuera del git
+				por ejemplo jgoogle.js

@@ -227,7 +227,7 @@ function dibujaCuadro(nrows, ncols, control, width, height, padding_left, paddin
 		for (col=0; col<ncols; col++) {
 			cad += '<div id="' + ncontrol + '-' + row + '-' + col + '"'
 				+ ' class="node col" style="' + st + '"'
-				+ ' onclick="click' + ncontrol + '(' + row + ',' + col + ')"'
+				+ ' onclick="click_' + ncontrol + '(' + row + ',' + col + ')"'
 				+ '">' 
 				+ '</div>';
 		}

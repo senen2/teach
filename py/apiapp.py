@@ -29,41 +29,32 @@ def CreaUsuarioA(email, clave, nombre, modo, lang):
     bd.cierra()
     return resp
 
-# def CreaUsuarioA(request):
-#     bd = DB(nombrebd="aprende")
-#     email = request.forms.get('email')
-#     rows = bd.Ejecuta("select * from usuarios where email='%s'"%email)
-#     resp = "x"
-#     if not rows:
-#         clave = request.forms.get('clave')
-#         nombre = request.forms.get('nombre')
-#         modo = request.forms.get('modo')
-#         lang = request.forms.get('lang')
-#         bd.Ejecuta("insert into usuarios (nombre, email, clave, modo, lang) values ('%s','%s','%s','%s','%s')"%(nombre, email, clave, modo, lang))
-#         resp = "ok"
-
-#     bd.cierra()
-#     return resp
-
 # texto ----------------------------------
 
-def LeeTextosA(email, clave):
+def LeeCuadernosA(email, clave):
     bd = DB(nombrebd="aprende")
     usuario = login(email, clave, bd)
+    response = {}
     if usuario:
-        response = {}
         response['usuario'] = usuario
-        response["niveles"] = bd.Ejecuta("select *, id as ID from niveles")
         if usuario['modo']=='E':
-            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas where idusuario=%s order by nombre"%usuario['ID'] )
-        else:
-            response["textos"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas order by nombre" )
-        bd.cierra()
-        return response
+            response["niveles"] = bd.Ejecuta("select *, id as ID from niveles")
+            response["materias"] = bd.Ejecuta("select *, id as ID from materias")
+            response["cuadernos"] = bd.Ejecuta("select *, id as ID from cuadernos where idmaestro=%s order by nombre"%usuario['ID'] )
     bd.cierra()
-    return None
+    return response
 
-def LeeTextoA(email, clave, idtexto):
+def LeePaginasA(email, clave, idcuaderno):
+    bd = DB(nombrebd="aprende")
+    usuario = login(email, clave, bd)
+    response = {}
+    if usuario:
+        if usuario['modo']=='E':
+            response["paginas"] = bd.Ejecuta("select *, id as ID, titulo as nombre from paginas where idcuaderno=%s order by nombre"%idcuaderno)
+    bd.cierra()
+    return response
+
+def LeePaginaA(email, clave, idtexto):
     bd = DB(nombrebd="aprende")
     usuario = login(email, clave, bd)
     if usuario:
@@ -278,8 +269,8 @@ def LeeHorarioA(email, clave, idusuario):
     usuario = login(email, clave, bd)
     resp = {}
     if usuario:
-        resp['horario'] = bd.Ejecuta("select *, cast(hora as char) as horac from horarios where idusuario=%s and activo=1 order by dia, hora"%usuario['ID'])
-        resp['horas'] = bd.Ejecuta("select cast(hora as char) as horac from horarios where idusuario=%s and activo=1 group by hora"%usuario['ID'])
+        resp['horario'] = bd.Ejecuta("select *, cast(horat as char) as horac from horarios where idusuario=%s and activo=1 order by dia, horat"%usuario['ID'])
+        resp['horas'] = bd.Ejecuta("select cast(horat as char) as horac from horarios where idusuario=%s and activo=1 group by horat"%usuario['ID'])
         resp['dias'] = bd.Ejecuta("select distinct dia from horarios where idusuario=%s and activo=1 order by dia"%usuario['ID'])
     bd.cierra()
     return resp
